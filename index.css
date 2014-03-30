@@ -36,7 +36,7 @@ a{
 
 a:link {color:white}    /* unvisited link */
 a:visited {color:white;} /* visited link */
-a:hover {color:#D685FF;}   /* mouse over link */
+a:hover {color:#9966FF;}   /* mouse over link */
 a:active {color:white;} 
 
 /*
