@@ -1,0 +1,28 @@
+p{
+	padding: 7px 0px 3px 0px;
+	font-family: 'Lato', sans-serif;
+}
+
+.italic{
+	padding: 7px 0px 7px 0px;
+	font-style: italic;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+}
+
+.center{
+	margin: 0 50% 0 50%;
+	width: 30%;
+	left: -10%;
+	position: relative;
+}
+
+.vertCenter{
+	margin: 10% 0 10% 0;
+	height: 10%;
+	top: -35%;
+}
+
+a{
+	color: black;
+}
