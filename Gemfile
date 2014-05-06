@@ -13,9 +13,11 @@ gem 'thin'
 gem 'activesupport'
 gem 'activerecord'
 
-gem 'rake'
+gem 'rake', '10.3.1'
 
 gem 'shotgun'
+
+gem 'bcrypt'
 
 group :test do
   gem 'faker'

@@ -1,23 +1,19 @@
-<div class="container">
-  <h1>Welcome to Sinatra!</h1>
-  <p>Hello, world!</p>
-
-  <table>
-    <tr>
-      <th>File Description</th>
-      <th>File Location</th>
-    </tr>
-    <tr>
-      <td>This view file</td>
-      <td><code><%= __FILE__.gsub(Sinatra::Application.root, '') %></code></td>
-    </tr>
-    <tr>
-      <td>The layout file</td>
-      <td><code><%= File.expand_path('../layout.erb', __FILE__).gsub(Sinatra::Application.root, '') %></code></td>
-    </tr>
-    <tr>
-      <td>The current controller</td>
-      <td><code><%= File.expand_path('../../controllers/index.rb', __FILE__).gsub(Sinatra::Application.root, '') %></code></td>
-    </tr>
-  </table>
-</div>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <title>Erica Lyons</title>
+  </head>
+  <body>
+    <div class="fullPageImg">
+      <h1 id="mainTitle">THE QUIET OBSERVER</h1>
+      <!--<h3 class="italic">"Beauty is hidden in everything, just learn how to observe" -Ritu Ghatourey</h3>-->
+      <div id="linkCntnr">
+        <a href="about">about</a>
+        <a href="blog">blog</a>
+        <a href="contact">contact</a>
+      </div>
+    </div>
+  </body>
+</html>

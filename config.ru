@@ -10,6 +10,8 @@ configure do
 
   # Set the views to 
   set :views, File.join(Sinatra::Application.root, "app", "views")
+
+  set :public_folder, File.dirname(__FILE__) + '/public'
 end
 
 run Sinatra::Application
