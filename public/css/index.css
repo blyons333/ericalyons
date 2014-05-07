@@ -1,5 +1,5 @@
 .fullPageImg{
-	background: url('../img/CloudPic.jpg') no-repeat;
+	background: url('/img/CloudPic.jpg') no-repeat;
 	position: absolute;
 	height: 100%;
 	width: 100%;
