@@ -24,7 +24,7 @@ post '/verify-login' do
 	this_user = User.create(username: user)
 	this_user.password = pass
 	this_user.save
-	erb :index
+	redirect '/'
 end
 
 get '/admin/homepage' do
