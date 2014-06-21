@@ -14,7 +14,8 @@ post '/verify-login' do
 	user = params[:username]
 
 	if User.authenticate(user, pass)
-		session[:user_id] = 1
+		cur_user = User.find_by_username(user)
+		session[:user_id] = cur_user.id
 		p session
 		redirect to '/admin/homepage'
 	else
@@ -28,7 +29,5 @@ post '/verify-login' do
 end
 
 get '/admin/homepage' do
-
-
 	erb :admin_homepage
 end
