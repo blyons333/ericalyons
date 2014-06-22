@@ -4,7 +4,6 @@ class CreatePosts < ActiveRecord::Migration
   		t.string :title
   		t.text :post_text
   		t.timestamps
-  		t.has_many :images
   	end
   end
 end
