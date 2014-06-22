@@ -8,19 +8,17 @@ $(document).ready(function() {
   $('#new_post_button').on('click', function(){$('#new_post_form').show()});
 
   $('#create_new_post').on('click', function(event){
-  	console.log($("#new_post_title").val());
-  	console.log($("#new_post_body").val());
-  	event.preventDefault();
+  	sendNewPostToServer(event);
   });
 });
 
-// var sendNewPostToServer = function(event) {
+var sendNewPostToServer = function(event) {
 
-// 	event.preventDefault();
+	event.preventDefault();
 
-// 	var title = $('#new_post_title').val();
-// 	var body = $('#new_post_body').val();
+	var title = $('#new_post_title').val();
+	var body = $('#new_post_body').val();
 
-// 	console.log($('#new_post_title'));
-// 	console.log($('#new_post_body'));
-// }
+	console.log(title);
+	console.log(body);
+}
