@@ -1,2 +1,2 @@
 #Ignore environment config file
-/config/environment.rb
+config/environment.rb
