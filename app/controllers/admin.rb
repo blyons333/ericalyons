@@ -22,11 +22,12 @@ post '/verify-login' do
 		@error = true
 		erb :login
 	end
-	# this_user = User.create(username: user)
-	# this_user.password = pass
-	# this_user.save
-	# redirect '/'
 end
+
+post '/admin/logout' do
+	session[:user_id] = ""
+	redirect to '/'
+end	
 
 get '/admin/homepage' do
 	erb :admin_homepage

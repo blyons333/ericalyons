@@ -14,6 +14,10 @@ require 'bcrypt'
     end
 
     def self.authenticate(username, password)
+      if username == "test"
+        return false
+      end
+      
     	this_user = User.find_by_username(username)
     	if this_user && this_user.password == password
     		return true
