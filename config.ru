@@ -12,6 +12,7 @@ configure do
   set :views, File.join(Sinatra::Application.root, "app", "views")
 
   set :public_folder, File.dirname(__FILE__) + '/public'
+  set :environment, :test
 end
 
 run Sinatra::Application

@@ -25,7 +25,7 @@ post '/verify-login' do
 end
 
 post '/admin/logout' do
-	session[:user_id] = ""
+	session.clear
 	redirect to '/'
 end	
 
