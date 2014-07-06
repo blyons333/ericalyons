@@ -13,6 +13,10 @@ post '/verify-login' do
 	pass = params[:password]
 	user = params[:username]
 
+#	this_user = User.create(username: user)
+#	this_user.password = pass
+#	this_user.save
+
 	if User.authenticate(user, pass)
 		cur_user = User.find_by_username(user)
 		session[:user_id] = cur_user.id
