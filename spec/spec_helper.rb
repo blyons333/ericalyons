@@ -27,6 +27,8 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
   end
 
+  #These settings will start the transaction fore
+  #each test instead of the test suite
   # config.before(:each) do
   #   DatabaseCleaner.start
   # end
