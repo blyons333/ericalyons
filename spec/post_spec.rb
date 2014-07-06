@@ -6,13 +6,13 @@ RSpec::Matchers.define :exist_in_database do
   end
 end
 	
-	def create_user(user_name, password)
-		if (!User.find_by_username("test"))
-			this_user = User.create(username: user_name)
-			this_user.password = password
-			this_user.save
-		end
+def create_user(user_name, password)
+	if (!User.find_by_username("test"))
+		this_user = User.create(username: user_name)
+		this_user.password = password
+		this_user.save
 	end
+end
 
 describe Post, "#Post CRUD" do
 	test_username = "test"
