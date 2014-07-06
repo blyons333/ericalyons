@@ -1,6 +1,8 @@
 require 'bcrypt'
 
   class User < ActiveRecord::Base
+    has_many :posts
+    
     # users.password_hash in the database is a :string
     include BCrypt
 
@@ -17,7 +19,7 @@ require 'bcrypt'
       if username == "test"
         return false
       end
-      
+
     	this_user = User.find_by_username(username)
     	if this_user && this_user.password == password
     		return true

@@ -1,11 +1,9 @@
 require 'spec_helper'
 
 RSpec::Matchers.define :exist_in_database do
-
   match do |actual|
     actual.class.exists?(actual.id)
   end
-
 end
 	
 	def create_user(user_name, password)
@@ -29,27 +27,25 @@ describe Post, "#Post CRUD" do
   	end
 
 	it "creates new post with title and text" do
-		post1 = Post.create do |p|
+		post1 = user.posts.create do |p|
 			p.title = "test title" 
 			p.post_text = "this is the text"
-			p.user = user
 		end
 		post1.title.should eq("test title")
 	end
 
 	it "finds all posts for user" do
-		post2 = Post.create do |p|
+		post2 = user.posts.create do |p|
 			p.title = "test title2" 
 			p.post_text = "this is the text2"
-			p.user = user
 		end
 
-		all_posts = Post.find_all_by_user_id(user)
+		all_posts = user.posts
 		all_posts.count.should eq(2)
 	end
 
 	it "edits a post for a user" do
-		post = Post.find_by_user_id(user.id)
+		post = user.posts[0]
 		post.title = "new title"
 		post.save
 		new_title = Post.find_by_id(post.id).title
@@ -57,22 +53,21 @@ describe Post, "#Post CRUD" do
 	end
 
 	it "delete post" do
-		all_posts = Post.find_all_by_user_id(user)
-		Post.destroy(all_posts[0])
+		all_posts = user.posts
+		user.posts[0].destroy
 		all_posts[0].should_not exist_in_database
 	end
 
 	it "delete all posts" do
-		post2 = Post.create do |p|
+		post2 = user.posts.create do |p|
 			p.title = "test title2" 
 			p.post_text = "this is the text2"
-			p.user = user
 		end
-		all_posts = Post.find_all_by_user_id(user)
-		Post.destroy(all_posts)
-		all_posts = Post.find_all_by_user_id(user)
+		post2.save
+		all_posts = user.posts
+		user.posts.destroy_all
+		all_posts = user.posts
 		all_posts.count.should eq(0)
 	end
-
 end 
 
