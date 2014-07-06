@@ -24,4 +24,5 @@ gem 'i18n', '0.6.9'
 group :test do
   gem 'faker'
   gem 'rspec'
+  gem 'database_cleaner'
 end

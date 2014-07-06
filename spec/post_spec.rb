@@ -20,17 +20,31 @@ describe Post, "#create" do
 
 	it "creates new post with title and text" do
 		user = User.find_by_username(@@test_username)
-		new_post = Post.create do |p|
+		post1 = Post.create do |p|
 			p.title = "test title" 
 			p.post_text = "this is the text"
 			p.user = user
 		end
-		new_post.title.should eq("test title")
+		post1.title.should eq("test title")
 	end
 
 	it "finds all posts for user" do
+		# create_user(@@test_username, "testPassword123")
 		user = User.find_by_username("test")
-		#user_posts = Post.
+		# post1 = Post.create do |p|
+		# 	p.title = "test title" 
+		# 	p.post_text = "this is the text"
+		# 	p.user = user
+		# end
+
+		post2 = Post.create do |p|
+			p.title = "test title2" 
+			p.post_text = "this is the text2"
+			p.user = user
+		end
+
+		all_posts = Post.find_all_by_user_id(user)
+		all_posts.count.should eq(2)
 	end
 end 
 
