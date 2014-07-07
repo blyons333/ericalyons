@@ -4,7 +4,7 @@
 # timestamp
 
 class Tag < ActiveRecord::Base
-	has_many :post_tags
+	has_many :post_tags, dependent: :destroy
 	has_many :posts, through: :post_tags
 	validates_uniqueness_of :name
 	def self.create_or_get_existing(tag_name)
@@ -18,5 +18,9 @@ class Tag < ActiveRecord::Base
 			}
 		end
 		return tag
+	end
+
+	def find_or_create_by(tag_name) 
+
 	end
 end
