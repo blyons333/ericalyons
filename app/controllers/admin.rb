@@ -9,10 +9,6 @@ get '/login' do
 end
 
 post '/verify-login' do
-	puts "THESE ARE THE PARAMS"
-	pass = params[:password]
-	user = params[:username]
-
 #	this_user = User.create(username: user)
 #	this_user.password = pass
 #	this_user.save
@@ -32,6 +28,17 @@ post '/admin/logout' do
 	session.clear
 	redirect to '/'
 end	
+
+post '/admin/add-post' do
+	title = params[:title]
+	body = params[:body]
+	cur_user = User.find(session[:user_id])
+	new_post = cur_user.posts.create { |p|
+				p.title = title
+				p.post_text = body
+				}
+	return erb(:_single_post, :layout => false, :locals => {:id => new_post.id, :title => title, :body => body})
+end
 
 get '/admin/homepage' do
 	erb :admin_homepage

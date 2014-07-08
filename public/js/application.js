@@ -8,17 +8,36 @@ $(document).ready(function() {
   $('#new_post_button').on('click', function(){$('#new_post_form').show()});
 
   $('#create_new_post').on('click', function(event){
-  	sendNewPostToServer(event);
+    var p = new Post($('#new_post_title').val(), $('#new_post_body').val(), null, null);
+  	p.createNewPost();
   });
 });
 
-var sendNewPostToServer = function(event) {
+function Post(title, body, image, tags) {
+  this.title = title;
+  this.body = body;
+  this.image = image;
+  this.tags = tags;
+}
+
+Post.prototype.createNewPost = function() {
 
 	event.preventDefault();
 
-	var title = $('#new_post_title').val();
-	var body = $('#new_post_body').val();
+  $.ajax({
+    url: "/admin/add-post",
+    type: "POST",
+    data: {'title': this.title, 'body': this.body},
+    success: function(data){
+      addPostToPage(data);
+    }
+  });
 
-	console.log(title);
-	console.log(body);
+	console.log(this.title);
+	console.log(this.body);
+}
+
+var addPostToPage = function(data) {
+  console.log("This is the data:")
+  console.log(data);
 }
