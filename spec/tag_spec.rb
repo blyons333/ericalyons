@@ -20,13 +20,10 @@ describe Tag, "#Tag CRUD" do
 	  	Tag.all.count.should eq(1)
 	  end
 
-	 #  it "try to create an existing tag" do
-	 #  	tag = Tag.create { |t|
-		# 		t.name = "test"
-		# 	}
-
-		# Tag.all.count.should eq(1)
-	 #  end
+	  it "try to create an existing tag" do
+	  	tag = Tag.create_or_get_existing("test")
+		Tag.all.count.should eq(1)
+	  end
 
 	  it "edit tag" do
 	  	tag = Tag.create_or_get_existing("test")

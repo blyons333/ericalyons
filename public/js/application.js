@@ -10,6 +10,7 @@ $(document).ready(function() {
   $('#create_new_post').on('click', function(event){
     var p = new Post($('#new_post_title').val(), $('#new_post_body').val(), null, null);
   	p.createNewPost();
+    
   });
 });
 
@@ -29,7 +30,10 @@ Post.prototype.createNewPost = function() {
     type: "POST",
     data: {'title': this.title, 'body': this.body},
     success: function(data){
-      addPostToPage(data);
+      Post.addPostToPage(data);
+      $('#new_post_title').val("");
+      $('#new_post_body').val("");
+      $('#new_post_form').hide();
     }
   });
 
@@ -37,7 +41,7 @@ Post.prototype.createNewPost = function() {
 	console.log(this.body);
 }
 
-var addPostToPage = function(data) {
+Post.addPostToPage = function(data) {
   console.log("This is the data:")
   console.log(data);
 }
