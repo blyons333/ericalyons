@@ -8,6 +8,8 @@ require 'database_cleaner'
 # command line when we run rake spec.  That's tedious, so do it here.
 ENV['RACK_ENV'] ||= 'test'
 
+#Using the database cleaner gem to
+#clear out the database after every test suite
 RSpec.configure do |config|
 
   config.before(:suite) do

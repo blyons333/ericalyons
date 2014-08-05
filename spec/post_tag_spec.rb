@@ -66,4 +66,5 @@ describe PostTag, '#PostTag CRUD' do
   	post_tag.should_not exist_in_database
   	PostTag.all.count.should eq(0)
   end
+  
 end
