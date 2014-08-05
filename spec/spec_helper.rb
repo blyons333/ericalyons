@@ -8,26 +8,31 @@ require 'database_cleaner'
 # command line when we run rake spec.  That's tedious, so do it here.
 ENV['RACK_ENV'] ||= 'test'
 
-#Using the database cleaner gem to
-#clear out the database after every test suite
+# Using the database cleaner gem to
+# clear out the database after every test suite
 RSpec.configure do |config|
 
-  config.before(:suite) do
+  #If running all the tests at once, configuring
+  #this to before(:all) works. If you're running
+  #tests individually, configure to before(:suite)
+  config.before(:all) do
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.start
   end
 
-  config.after(:suite) do
+  config.after(:all) do
   	DatabaseCleaner.clean
   end
 
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
+  #Not sure what these do, copied them
+  #from the example
+  # config.before(:each) do
+  #   DatabaseCleaner.strategy = :transaction
+  # end
 
-  config.before(:each, :js => true) do
-    DatabaseCleaner.strategy = :truncation
-  end
+  # config.before(:each, :js => true) do
+  #   DatabaseCleaner.strategy = :truncation
+  # end
 
   #These settings will start the transaction fore
   #each test instead of the test suite

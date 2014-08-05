@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Tag, "#Tag CRUD" do
+	
 	  it "creates a new tag" do
 	  	tag = Tag.create_or_get_existing("test")
 	  	expect(Tag.where(name: "test")).to exist
@@ -10,6 +11,7 @@ describe Tag, "#Tag CRUD" do
 	  	tag = Tag.create_or_get_existing("test")
 	  	all_tags_with_name = Tag.where(name: "test")
 	  	all_tags_with_name.count.should eq(1)
+	  	Tag.all.count.should eq(1)
 	  end
 
 	  it "make sure tags are case-insensitive" do
