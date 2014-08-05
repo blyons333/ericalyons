@@ -9,11 +9,15 @@ get '/login' do
 end
 
 post '/verify-login' do
-#	this_user = User.create(username: user)
-#	this_user.password = pass
-#	this_user.save
 	user = params[:username]
 	pass = params[:password]
+
+	#User creation methods
+#	this_user = User.create(username: user)
+#       this_user.password = pass
+#       this_user.save
+	#End user creation methods
+
 	if User.authenticate(user, pass)
 		cur_user = User.find_by_username(user)
 		session[:user_id] = cur_user.id
