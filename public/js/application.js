@@ -5,13 +5,23 @@ $(document).ready(function() {
 
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
   $('#new_post_form').hide();
-  $('#new_post_button').on('click', function(){$('#new_post_form').show()});
+  $('#new_post_button').on('click', 
+                            function(event){
+                              event.preventDefault();
+                              $('#new_post_form').show();
+                            }
+                          );
 
-  $('#create_new_post').on('click', function(event){
-    var p = new Post($('#new_post_title').val(), $('#new_post_body').val(), null, null);
-  	p.createNewPost();
-    
-  });
+  $('#create_new_post').on('click', 
+                            function(event){
+                              var p = new Post($('#new_post_title').val(), 
+                                               $('#new_post_body').val(), 
+                                               null, 
+                                               null);
+                            	p.createNewPost();
+                            
+                            }
+                          );
 });
 
 function Post(title, body, image, tags) {
