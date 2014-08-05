@@ -1,2 +1,4 @@
 #Ignore environment config file
 config/environment.rb
+#Ignore database seeding file
+db/seeds.rb
