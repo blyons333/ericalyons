@@ -17,9 +17,6 @@ end
 describe Post, "#Post CRUD" do
 	test_username = "test"
 	user = nil
-	def app
-    	Sinatra::Application
-  	end
 
   	it "creates a new user for testing" do
   		create_user(test_username, "testPassword123")
@@ -70,4 +67,30 @@ describe Post, "#Post CRUD" do
 		all_posts.count.should eq(0)
 	end
 end 
+
+describe Post, '#Associating tags to posts' do
+	test_username = "test"
+	user = nil
+
+	it "creates a new user for testing" do
+  		create_user(test_username, "testPassword123")
+  		user = User.find_by_username(test_username)
+  	end
+
+	it "adds a tag to a post" do
+		post1 = user.posts.create do |p|
+			p.title = "test title" 
+			p.post_text = "this is the text"
+		end
+
+		#Add a tag
+		post1.add_tag("tag1")
+		post1.tags.count.should eq(1)
+
+		post1.add_tag("tag2")
+		post1.tags.count.should eq(2)
+
+	end
+
+end
 

@@ -1,5 +1,8 @@
 require 'rubygems'
 require 'database_cleaner'
+require 'rack/test'
+require 'sinatra'
+require 'sinatra/base'
 
 # All our specs should require 'spec_helper' (this file)
 
@@ -8,9 +11,24 @@ require 'database_cleaner'
 # command line when we run rake spec.  That's tedious, so do it here.
 ENV['RACK_ENV'] ||= 'test'
 
+#Setting some of the application values so controller tests
+#work as expected
+set :session_secret, ENV['SESSION_SECRET'] || 'this is a secret shhhhh'
+set :app_file, "/Users/britneylyons/Documents/MyWebsite/ericalyons"
+set :views, File.join("/Users/britneylyons/Documents/MyWebsite/ericalyons", "app", "views")
+enable :sessions
+
+#Adding this for controller testing
+def app
+  Sinatra::Application
+end
+
 # Using the database cleaner gem to
 # clear out the database after every test suite
 RSpec.configure do |config|
+
+  #Adding this for controller testing
+  config.include Rack::Test::Methods
 
   #If running all the tests at once, configuring
   #this to before(:all) works. If you're running

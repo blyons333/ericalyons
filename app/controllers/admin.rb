@@ -14,10 +14,10 @@ post '/verify-login' do
 #	this_user.save
 	user = params[:username]
 	pass = params[:password]
+
 	if User.authenticate(user, pass)
 		cur_user = User.find_by_username(user)
 		session[:user_id] = cur_user.id
-		p session
 		redirect to '/admin/homepage'
 	else
 		@error = true
@@ -32,14 +32,20 @@ end
 
 post '/admin/add-post' do
 	title = params[:title]
-	body = params[:body]
-	unless title == "" && body == ""
+	post_text = params[:post_text]
+	tags = params[:tags]
+	images = params[:images]
+
+	unless title == "" && post_text == ""
 		cur_user = User.find(session[:user_id])
-		new_post = cur_user.posts.create { |p|
-					p.title = title
-					p.post_text = body
-					}
-		return erb(:_single_post, :layout => false, :locals => {:id => new_post.id, :title => title, :body => body})
+		new_post = cur_user.add_post({:title => title,
+						   			  :post_text => post_text,
+						   			  :tags => tags,
+						   			  :images => images})
+
+		return erb(:_single_post, 
+				   :layout => false, 
+				   :locals => new_post.generate_view_locals())
 	else
 		return ""
 	end
@@ -47,5 +53,8 @@ post '/admin/add-post' do
 end
 
 get '/admin/homepage' do
-	erb :admin_homepage
+	cur_user = User.find(session[:user_id])
+	return erb(:admin_homepage, 
+		       :layout => true, 
+		       :locals => {:user => cur_user})
 end

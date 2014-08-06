@@ -1,4 +1,5 @@
 <div class="post" id="<%= id %>">
-	<h1><%= title %></h1>
-	<p><%= body %></p>
+	<p class="post_title"><%= title %></p>
+	<p class="post_text"><%= post_text %></p>
+	<p class="post_create_date"> <%= created_at.to_time.strftime("Posted %B %d, %Y %I:%M%p") %></p>
 </div>
