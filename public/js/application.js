@@ -1,5 +1,7 @@
 var wWidth = 0;
 var wHeight = 0;
+var postIdRegex = /post(\d+)/
+var tagIdRegex = /tag(\d+)/
 
 $(document).ready(function() {
   // This is called after the document has loaded in its entirety
@@ -74,16 +76,40 @@ function addEventListeners(){
    $('span.ui-icon-close').on('click', function(){
       var parentButton = $(this).parent();
       var parentId = parentButton.attr('id');
-      var postIdRegex = /post(\d+)/
-      var tagIdRegex = /tag(\d+)/
+      
       var postId = postIdRegex.exec(parentId);
       var tagId = tagIdRegex.exec(parentId);
-      console.log("post id: " + postId[1]);
-      console.log("tag id: " + tagId[1]);
-      Post.removeTag(postId[1], tagId[1]);
+      console.log("post " + postId);
+      console.log("tag " + tagId);
+      if (postId == null && tagId.length > 1) {
+         Tag.removeTag(tagId[1]);
+      }else if (postId.length > 1 && tagId.length > 1){
+         Post.removeTag(postId[1], tagId[1]);
+      }
+      
    });
 
    $('.action_button').button();
+
+   $('.available_tag').draggable({
+      revert: true,
+      helper: "clone",
+      cancel: false
+   });
+
+   $('.post').droppable({
+      accept: ".available_tag",
+      activeClass: "ui-state-hover",
+      hoverClass: "ui-state-active",
+      drop: function(event, ui) {
+         droppedTagId = ui.draggable.attr('id');
+         tagId = tagIdRegex.exec(droppedTagId);
+         console.log(tagId[1]);
+         postId = postIdRegex.exec(($(this)[0]).id);
+         console.log(postId[1]);
+         Post.addTag(postId[1], tagId[1]);
+      }
+   });
 }
 
 function createAndAddTagInput(numTags, elemToAppend){
@@ -115,14 +141,19 @@ function convertInputToButton(tagId) {
       var uiCloseIcon = $('#'+tagId).children('span.ui-icon-close');
       console.log(uiCloseIcon);
       uiCloseIcon.on("click", function(event) {
-         removeTagButton(tagId);
+         removeTagButton('#'+tagId);
       });
       tagElement.unbind();
    }
 }
 
+function createTagButton(buttonId, tagText){
+   return "<button type='button' id='" + buttonId + "' class='tag'>" + tagText + "</button>"
+}
+
+
 function removeTagButton(tagId) {
-   var tagElement = $('#'+tagId);
+   var tagElement = $(tagId);
    tagElement.remove();
 }
 
@@ -152,8 +183,48 @@ Post.removeTag = function(postId, tagId) {
       data: {'post_id': postId, 'tag_id': tagId},
       success: function(data){
          tagButtonId = "post"+postId+"tag"+tagId;
-         removeTagButton(tagButtonId);
+         removeTagButton('#'+tagButtonId);
       }
+   });
+}
+
+Post.addTag = function(postId, tagId) {
+   $.ajax({
+       url: "/admin/add-tag-to-post",
+      type: "POST",
+      data: {'post_id': postId, 'tag_id': tagId},
+      success: function(data){
+         tagButtonId = "post"+postId+"tag"+tagId;
+         tagButton = createTagButton(tagButtonId, data);
+         Post.addTagButton(postId, tagButtonId, tagButton);
+      }
+   });
+}
+
+Post.addTagButton = function(postId, tagButtonId, tagButton) {
+   post_tag_div = $('#post_tag_container'+postId);
+   post_tag_div.append(tagButton);
+
+   $('#'+tagButtonId).button({
+      icons: {
+         primary: "ui-icon-close"
+      }
+   });
+
+   $('span.ui-icon-close').on('click', function(){
+      var parentButton = $(this).parent();
+      var parentId = parentButton.attr('id');
+      
+      var postId = postIdRegex.exec(parentId);
+      var tagId = tagIdRegex.exec(parentId);
+      console.log("post " + postId);
+      console.log("tag " + tagId);
+      if (postId == null && tagId.length > 1) {
+         Tag.removeTag(tagId[1]);
+      }else if (postId.length > 1 && tagId.length > 1){
+         Post.removeTag(postId[1], tagId[1]);
+      }
+      
    });
 }
 
@@ -184,5 +255,21 @@ Post.addPostToPage = function(data) {
       console.log("post id: " + postId[1]);
       console.log("tag id: " + tagId[1]);
       removeTag(postId, tagId);
+   });
+}
+
+function Tag(){
+
+}
+
+Tag.removeTag = function(tagId) {
+   $.ajax({
+       url: "/admin/remove-tag",
+      type: "POST",
+      data: {'tag_id': tagId},
+      success: function(data){
+         tagButtonId = "tag"+tagId;
+         removeTagButton('*[id*='+tagButtonId+']');
+      }
    });
 }

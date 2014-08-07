@@ -65,6 +65,23 @@ post '/admin/remove-tag-from-post' do
 	return ""
 end
 
+post '/admin/remove-tag' do
+	tag_id = params[:tag_id]
+
+	cur_user = User.find(session[:user_id])
+	posts_affected = cur_user.delete_all_tags(tag_id)
+	return ""
+end
+
+post '/admin/add-tag-to-post' do
+	post_id = params[:post_id]
+	tag_id = params[:tag_id]
+	
+	cur_user = User.find(session[:user_id])
+	new_tag = cur_user.add_tag_to_post(post_id, tag_id)
+	return new_tag.name
+end
+
 get '/admin/homepage' do
 	cur_user = User.find(session[:user_id])
 	return erb(:admin_homepage, 

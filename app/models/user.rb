@@ -53,4 +53,30 @@ require 'bcrypt'
       return new_post
     end
 
+    def add_tag_to_post(post_id, tag_id)
+      cur_post = posts.find(post_id)
+      new_tag = cur_post.add_tag_by_id(tag_id)
+      return new_tag
+    end
+
+    def get_unique_tags()
+      unique_tags = Set.new() 
+      posts.each { |p|
+        p.tags.each { |t|
+          unique_tags.add(t)
+        }
+      }
+      return unique_tags
+    end
+
+    def delete_all_tags(tag_id)
+      posts_affected = Array.new()
+      posts.each { |p|
+        if p.remove_tag(tag_id)
+          posts_affected.push(p.id)
+        end
+      }
+      return posts_affected
+    end
+
   end

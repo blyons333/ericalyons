@@ -1,8 +1,8 @@
-<div class="post center" id="<%= id %>">
+<div class="post center" id="post<%= id %>">
 	<p class="post_create_date"> <%= created_at.to_time.strftime("Posted %B %d, %Y %I:%M%p") %></p>
 	<p class="post_title"><%= title %></p>
 	<p class="post_text"><%= post_text %></p>
-	<div class="post_tag_container">
+	<div id="post_tag_container<%= id %>" class="post_tag_container">
 		<% tags.each do |t| %>
 			<button id='<%="post#{id}tag#{t.id}"%>' class='tag'><%=t.name%></button>
 		<% end %>

@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 </head>
-<h1>You are the admin homepage, <%= user.username %>. Congratulations.</h1>
+<h1>You are the admin homepage, <%= user.username.titleize %>. Congratulations.</h1>
 <!-- 
 Technologies to use:
 jQueryUI (draggable, droppable, effects) -->
@@ -43,6 +43,12 @@ jQueryUI (draggable, droppable, effects) -->
 </span>
 
 <%= erb(:new_post, :layout => false) %>
+
+<div id='available_tags'>
+	<% user.get_unique_tags.each do |t| %>
+		<button id='<%="tag#{t.id}"%>' class='ui-widget-content tag available_tag'><%=t.name%></button>
+	<% end %>
+</div>
 
 
 <div id='post_display_container'>

@@ -20,9 +20,16 @@ class Post < ActiveRecord::Base
 		self.tags.push(new_tag)
 	end
 
+  def add_tag_by_id(tag_id)
+    new_tag = Tag.find(tag_id)
+    self.tags.push(new_tag)
+    return new_tag
+  end
+
   def remove_tag(tag_id)
-    tag = self.tags.find(tag_id)
+    tag = self.tags.where(id: tag_id)
     removed_tag = self.tags.delete(tag)
+    return removed_tag.count > 0
   end
 
 	def add_image(image)
