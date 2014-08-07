@@ -18,112 +18,61 @@ $(document).ready(function() {
 });
 
 function addEventListeners(){
-  Post.resetNewPostForm();
+   Post.resetNewPostForm();
 
-  var num_tags = 0;
+   var num_tags = 0;
 
-  new_post_dialog = $("#new_post_form").dialog({
-    autoOpen: false,
-    height: wHeight * 0.8,
-    width: wWidth * 0.8,
-    modal: true,
-    close: function(){
-      $("button").remove(".tag_button");
-      $("input").remove(".tag_input_button");
-      num_tags = 0;
-    },
-    buttons: {
-      "Add Tag": function() { 
-         num_tags++;
-         create_and_add_tag_input(num_tags);
-         // add_tag_dialog.dialog("open"); 
-         // console.log($("#new_post_form").data("tags"));
+   new_post_dialog = $("#new_post_form").dialog({
+      autoOpen: false,
+      height: wHeight * 0.8,
+      width: wWidth * 0.8,
+      modal: true,
+      close: function(){
+         $("button").remove(".tag_button");
+         $("input").remove(".tag_input_button");
+         num_tags = 0;
       },
-      "Add Photo": function() { 
-         console.log("add photo clicked!");
-      },
-      "Create Post": function(){
-        var tag_array = new Array();
-        $('button.tag_button').each(function(){
-            tag_array.push($(this).text());
-        });
-        var p = new Post($('#new_post_title').val(), 
-                         $('#new_post_body').val(), 
-                          tag_array, 
-                          null);
-        p.createNewPost();
-        new_post_dialog.dialog("close");
+      buttons: {
+         "Add Tag": function() { 
+            num_tags++;
+            create_and_add_tag_input(num_tags);
+            // add_tag_dialog.dialog("open"); 
+            // console.log($("#new_post_form").data("tags"));
+         },
+         "Add Photo": function() { 
+            console.log("add photo clicked!");
+         },
+         "Create Post": function(){
+            var tag_array = new Array();
+            $('button.tag_button').each(function(){
+               tag_array.push($(this).text());
+            });
+            var p = new Post($('#new_post_title').val(), 
+                             $('#new_post_body').val(), 
+                             tag_array, 
+                             null);
+            p.createNewPost();
+            new_post_dialog.dialog("close");
+         }
       }
-    }
 
-  });
+   });
 
-  add_tag_dialog = $('#new_tag_form').dialog({
-    autoOpen: false,
-    height: 200,
-    width: 350,
-    modal: true,
-    buttons: {
-      "Create Tag": function() {
-        var new_tag = $('#new_tag_input').val();
-        var tags = $('#new_post_form').data("tags");
-        tags.push(new_tag);
-        $("#new_post_form").data("tags", tags);
-        add_tag_dialog.dialog("close");
-      }
-    }
-  });
+   $('#new_post_button').on('click', function(event){
+      event.preventDefault();
+      wWidth = $(window).width();
+      wHeight = $(window).height();
+      $("#new_post_form").data("tags", new Array());
+      new_post_dialog.dialog("open");
+      var form_height = $('#new_post_form').height();
+       
+   });
 
-    $('#new_post_button').on('click', 
-                            function(event){
-                              event.preventDefault();
-                              wWidth = $(window).width();
-                              wHeight = $(window).height();
-                              $("#new_post_form").data("tags", new Array());
-                              new_post_dialog.dialog("open");
-                              var form_height = $('#new_post_form').height();
-
-                            }
-                          );
    $('.tag').button({
          icons: {
             primary: "ui-icon-close"
          }
    });
-
-  // $('#new_post_button').on('click', 
-  //                           function(event){
-  //                             event.preventDefault();
-  //                             if ($('#new_post_form').is(":visible")){
-  //                               $('#new_post_form').hide();
-  //                             }else{
-  //                               $('#new_post_form').show();
-  //                             }
-  //                           }
-  //                         );
-
-  // $('#create_new_post').on('click', 
-  //                           function(event){
-  //                             event.preventDefault();
-  //                             var p = new Post($('#new_post_title').val(), 
-  //                                              $('#new_post_body').val(), 
-  //                                              null, 
-  //                                              null);
-  //                             p.createNewPost();
-  //                           }
-  //                         );
-  // $('#add_tag').on('click',
-  //                   function(event) {
-  //                     event.preventDefault();
-  //                     console.log("add tag clicked!");
-  //                   }
-  //                 );
-  // $('#add_photo').on('click',
-  //                     function(event) {
-  //                       event.preventDefault();
-  //                       console.log("add photo clicked!");
-  //                     }
-  //                   );
 }
 
 function create_and_add_tag_input(num_tags){
@@ -163,30 +112,30 @@ function remove_tag_button(tag_id) {
 }
 
 function Post(title, body, tags, image) {
-  this.title = title;
-  this.body = body;
-  this.tags = tags;
-  this.image = image;
+   this.title = title;
+   this.body = body;
+   this.tags = tags;
+   this.image = image;
 }
 
 Post.prototype.createNewPost = function() {
-  $.ajax({
-    url: "/admin/add-post",
-    type: "POST",
-    data: {'title': this.title, 'post_text': this.body, 'tags': this.tags},
-    success: function(data){
-      Post.addPostToPage(data);
-      Post.resetNewPostForm();
-    }
-  });
+   $.ajax({
+       url: "/admin/add-post",
+      type: "POST",
+      data: {'title': this.title, 'post_text': this.body, 'tags': this.tags},
+      success: function(data){
+         Post.addPostToPage(data);
+         Post.resetNewPostForm();
+      }
+   });
 }
 
 Post.resetNewPostForm = function() {
-  $('#new_post_title').val("");
-  $('#new_post_body').val("");
-  $('#new_post_form').hide();
+   $('#new_post_title').val("");
+   $('#new_post_body').val("");
+   $('#new_post_form').hide();
 }
 
 Post.addPostToPage = function(data) {
-  $('#post_display_container').prepend(data);
+   $('#post_display_container').prepend(data);
 }
