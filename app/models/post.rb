@@ -22,8 +22,11 @@ class Post < ActiveRecord::Base
 
   def add_tag_by_id(tag_id)
     new_tag = Tag.find(tag_id)
-    self.tags.push(new_tag)
-    return new_tag
+    unless self.tags.include?(new_tag)
+      self.tags.push(new_tag)
+      return new_tag.name
+    end
+    return ""
   end
 
   def remove_tag(tag_id)

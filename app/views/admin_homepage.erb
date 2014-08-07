@@ -45,6 +45,7 @@ jQueryUI (draggable, droppable, effects) -->
 <%= erb(:new_post, :layout => false) %>
 
 <div id='available_tags'>
+	<h2>Your tags:</h2>
 	<% user.get_unique_tags.each do |t| %>
 		<button id='<%="tag#{t.id}"%>' class='ui-widget-content tag available_tag'><%=t.name%></button>
 	<% end %>

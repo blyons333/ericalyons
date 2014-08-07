@@ -79,7 +79,7 @@ post '/admin/add-tag-to-post' do
 	
 	cur_user = User.find(session[:user_id])
 	new_tag = cur_user.add_tag_to_post(post_id, tag_id)
-	return new_tag.name
+	return new_tag
 end
 
 get '/admin/homepage' do

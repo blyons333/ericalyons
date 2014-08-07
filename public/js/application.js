@@ -1,7 +1,8 @@
 var wWidth = 0;
 var wHeight = 0;
-var postIdRegex = /post(\d+)/
-var tagIdRegex = /tag(\d+)/
+var postIdRegex = /post(\d+)/;
+var tagIdRegex = /tag(\d+)/;
+var header_height = 0;
 
 $(document).ready(function() {
   // This is called after the document has loaded in its entirety
@@ -99,8 +100,8 @@ function addEventListeners(){
 
    $('.post').droppable({
       accept: ".available_tag",
-      activeClass: "ui-state-hover",
-      hoverClass: "ui-state-active",
+      // activeClass: "ui-state-hover",
+      hoverClass: "post_hover_active",
       drop: function(event, ui) {
          droppedTagId = ui.draggable.attr('id');
          tagId = tagIdRegex.exec(droppedTagId);
@@ -110,6 +111,21 @@ function addEventListeners(){
          Post.addTag(postId[1], tagId[1]);
       }
    });
+
+   header_height = $('#available_tags').position()
+
+   document.addEventListener ("scroll", updateTagPos);
+}
+
+function updateTagPos() {
+   
+   if (document.body.scrollTop < header_height.top){
+      $('#available_tags').css("position", "absolute");
+      $('#available_tags').css("top", "");
+   }else{
+      $('#available_tags').css("position", "fixed");
+      $('#available_tags').css("top", "0"); 
+   }
 }
 
 function createAndAddTagInput(numTags, elemToAppend){
@@ -194,9 +210,11 @@ Post.addTag = function(postId, tagId) {
       type: "POST",
       data: {'post_id': postId, 'tag_id': tagId},
       success: function(data){
-         tagButtonId = "post"+postId+"tag"+tagId;
-         tagButton = createTagButton(tagButtonId, data);
-         Post.addTagButton(postId, tagButtonId, tagButton);
+         if (data != ""){
+            tagButtonId = "post"+postId+"tag"+tagId;
+            tagButton = createTagButton(tagButtonId, data);
+            Post.addTagButton(postId, tagButtonId, tagButton);
+         }
       }
    });
 }
