@@ -55,6 +55,11 @@ post '/admin/add-post' do
 
 end
 
+post '/admin/remove-tag-from-post' do
+	
+
+end
+
 get '/admin/homepage' do
 	cur_user = User.find(session[:user_id])
 	return erb(:admin_homepage, 

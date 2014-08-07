@@ -92,5 +92,30 @@ describe Post, '#Associating tags to posts' do
 
 	end
 
+	it "deletes a tag from a post" do
+		#Create a post with tags
+		tagged_post = user.posts.create do |p|
+			p.title = "tagged post" 
+			p.post_text = "this post will have tags"
+		end
+		#Add some tags
+		tagged_post.add_tag("tag1")
+		tagged_post.add_tag("tag2") 
+
+		#Get the ID of an added tag
+		tag_id = tagged_post.tags[0].id
+
+		#Remove the tag
+		tagged_post.remove_tag(tag_id)
+
+		#Make sure the tag is removed
+		removed_tags = tagged_post.tags.where(id: tag_id)
+		removed_tags.count.should eq(0)
+
+		#Make sure there is still one tag left
+		tagged_post.tags.count.should eq(1)
+
+	end
+
 end
 

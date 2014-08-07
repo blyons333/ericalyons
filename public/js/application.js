@@ -20,9 +20,9 @@ $(document).ready(function() {
 function addEventListeners(){
    Post.resetNewPostForm();
 
-   var num_tags = 0;
+   var numTags = 0;
 
-   new_post_dialog = $("#new_post_form").dialog({
+   newPostDialog = $("#new_post_form").dialog({
       autoOpen: false,
       height: wHeight * 0.8,
       width: wWidth * 0.8,
@@ -30,29 +30,27 @@ function addEventListeners(){
       close: function(){
          $("button").remove(".tag_button");
          $("input").remove(".tag_input_button");
-         num_tags = 0;
+         numTags = 0;
       },
       buttons: {
          "Add Tag": function() { 
-            num_tags++;
-            create_and_add_tag_input(num_tags, $('#added_tags'));
-            // add_tag_dialog.dialog("open"); 
-            // console.log($("#new_post_form").data("tags"));
+            numTags++;
+            createAndAddTagInput(numTags, $('#added_tags'));
          },
          "Add Photo": function() { 
             console.log("add photo clicked!");
          },
          "Create Post": function(){
-            var tag_array = new Array();
+            var tagArray = new Array();
             $('button.tag_button').each(function(){
-               tag_array.push($(this).text());
+               tagArray.push($(this).text());
             });
             var p = new Post($('#new_post_title').val(), 
                              $('#new_post_body').val(), 
-                             tag_array, 
+                             tagArray, 
                              null);
             p.createNewPost();
-            new_post_dialog.dialog("close");
+            newPostDialog.dialog("close");
          }
       }
 
@@ -63,8 +61,8 @@ function addEventListeners(){
       wWidth = $(window).width();
       wHeight = $(window).height();
       $("#new_post_form").data("tags", new Array());
-      new_post_dialog.dialog("open");
-      var form_height = $('#new_post_form').height();
+      newPostDialog.dialog("open");
+      var formHeight = $('#new_post_form').height();
        
    });
 
@@ -74,42 +72,54 @@ function addEventListeners(){
          }
    });
 
+   $('span.ui-icon-close').on('click', function(){
+      var parentButton = $(this).parent();
+      var parentId = parentButton.attr('id');
+      var postIdRegex = /post(\d+)/
+      var tagIdRegex = /tag(\d+)/
+      var postId = postIdRegex.exec(parentId);
+      var tagId = tagIdRegex.exec(parentId);
+      console.log("post id: " + postId[1]);
+      console.log("tag id: " + tagId[1]);
+
+   });
+
    $('.action_button').button();
 }
 
-function create_and_add_tag_input(num_tags, elem_to_append){
-   var tag_id = "new_tag" + num_tags;
-   var input_html = "<input id='" + tag_id + "' class='tag_input_button'></input>"
-   elem_to_append.append(input_html);
-   $('#'+tag_id).blur(function(){
-      convert_input_to_button(tag_id);
+function createAndAddTagInput(numTags, elemToAppend){
+   var tagId = "new_tag" + numTags;
+   var inputHtml = "<input id='" + tagId + "' class='tag_input_button'></input>"
+   elemToAppend.append(inputHtml);
+   $('#'+tagId).blur(function(){
+      convertInputToButton(tagId);
    });
-   $('#'+tag_id).focus();
+   $('#'+tagId).focus();
 }
 
-function convert_input_to_button(tag_id) {
-   var tag_element = $('#'+tag_id);
-   var new_tag_text = tag_element.val();
-   if (new_tag_text != "") {
-      var button_html = "<button type='button' id='" + tag_id + "' class='tag_button'>" + new_tag_text + "</button>";
-      tag_element.replaceWith(button_html);
-      $('#'+tag_id).button({
+function convertInputToButton(tagId) {
+   var tagElement = $('#'+tagId);
+   var newTagText = tagElement.val();
+   if (newTagText != "") {
+      var buttonHtml = "<button type='button' id='" + tagId + "' class='tag_button'>" + newTagText + "</button>";
+      tagElement.replaceWith(buttonHtml);
+      $('#'+tagId).button({
          icons: {
             primary: "ui-icon-close"
          }
       });
-      var ui_close_icon = $('#'+tag_id).children('span.ui-icon-close');
-      console.log(ui_close_icon);
-      ui_close_icon.on("click", function(event) {
-         remove_tag_button(tag_id);
+      var uiCloseIcon = $('#'+tagId).children('span.ui-icon-close');
+      console.log(uiCloseIcon);
+      uiCloseIcon.on("click", function(event) {
+         removeTagButton(tagId);
       });
-      tag_element.unbind();
+      tagElement.unbind();
    }
 }
 
-function remove_tag_button(tag_id) {
-   var tag_element = $('#'+tag_id);
-   tag_element.remove();
+function removeTagButton(tagId) {
+   var tagElement = $('#'+tagId);
+   tagElement.remove();
 }
 
 function Post(title, body, tags, image) {
@@ -129,6 +139,10 @@ Post.prototype.createNewPost = function() {
          Post.resetNewPostForm();
       }
    });
+}
+
+Post.removeTag = function(postId, tagId) {
+
 }
 
 Post.resetNewPostForm = function() {
