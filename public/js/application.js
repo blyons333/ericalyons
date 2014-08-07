@@ -35,7 +35,7 @@ function addEventListeners(){
       buttons: {
          "Add Tag": function() { 
             num_tags++;
-            create_and_add_tag_input(num_tags);
+            create_and_add_tag_input(num_tags, $('#added_tags'));
             // add_tag_dialog.dialog("open"); 
             // console.log($("#new_post_form").data("tags"));
          },
@@ -73,14 +73,15 @@ function addEventListeners(){
             primary: "ui-icon-close"
          }
    });
+
+   $('.action_button').button();
 }
 
-function create_and_add_tag_input(num_tags){
+function create_and_add_tag_input(num_tags, elem_to_append){
    var tag_id = "new_tag" + num_tags;
    var input_html = "<input id='" + tag_id + "' class='tag_input_button'></input>"
-   $('#added_tags').append(input_html);
+   elem_to_append.append(input_html);
    $('#'+tag_id).blur(function(){
-      console.log(tag_id + " blurred");
       convert_input_to_button(tag_id);
    });
    $('#'+tag_id).focus();

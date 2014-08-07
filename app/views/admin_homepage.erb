@@ -8,42 +8,41 @@
 <!-- 
 Technologies to use:
 jQueryUI (draggable, droppable, effects) -->
-<span class="inline action_button">
-	<button type="button" id='new_post_button'>Add new post</button>
+<span class="inline action_button_span">
+	<button type="button" id='new_post_button' class='action_button'>Add new post</button>
 </span>
 
 <!-- Add tags -->
 <!-- Upload pictures -->
 
-<span class="inline action_button">
+<span class="inline action_button_span">
 	<h3>Update Posts</h3> 
 </span>
 <!-- Add tags -->
 <!-- Upload pictures -->
-<span class="inline action_button">
+<span class="inline action_button_span">
 	<h3>Add Tags</h3>
 </span>
 
-<span class="inline action_button">
+<span class="inline action_button_span">
 	<h3>Delete Posts</h3>
 </span>
 
-<span class="inline action_button">
+<span class="inline action_button_span">
 	<h3>Delete Comments</h3>
 </span>
 
-<span class="inline action_button">
+<span class="inline action_button_span">
 	<h3>Edit Personal Things</h3>
 </span>
 
-<span class="inline action_button">
+<span class="inline action_button_span">
 	<form method="post" action="logout">
-		<input type="submit" value="Logout" />
+		<input type="submit" class='action_button' value="Logout" />
 	</form>
 </span>
 
 <%= erb(:new_post, :layout => false) %>
-<%= erb(:new_tag, :layout => false) %>
 
 
 <h2 class="center">Here are your posts:</h2>
