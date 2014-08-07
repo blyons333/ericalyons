@@ -36,17 +36,23 @@ jQueryUI (draggable, droppable, effects) -->
 	<h3>Edit Personal Things</h3>
 </span>
 
-<%= erb(:new_post, :layout => false) %>
+<span class="inline action_button">
+	<form method="post" action="logout">
+		<input type="submit" value="Logout" />
+	</form>
+</span>
 
-<h2>Here are your posts:</h2>
+<%= erb(:new_post, :layout => false) %>
+<%= erb(:new_tag, :layout => false) %>
+
+
+<h2 class="center">Here are your posts:</h2>
 <div id='post_display_container'>
 	<% user.posts.ordered_by_reverse.each do |p| %>
 	<%= erb(:_single_post, :layout=>false, :locals => p.generate_view_locals()) %>
 	<% end %>
 </div>
 
-<form method="post" action="logout">
-	<input type="submit" value="Logout" />
-</form>
+
 
 
