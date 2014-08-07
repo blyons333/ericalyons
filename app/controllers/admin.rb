@@ -56,6 +56,7 @@ post '/admin/add-post' do
 end
 
 post '/admin/remove-tag-from-post' do
+	post_id = params[:post_id]
 	
 
 end

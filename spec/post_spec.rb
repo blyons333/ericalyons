@@ -115,6 +115,11 @@ describe Post, '#Associating tags to posts' do
 		#Make sure there is still one tag left
 		tagged_post.tags.count.should eq(1)
 
+		#Make sure the tag didn't get deleted from
+		#the tags database
+		deleted_tag = Tag.find(tag_id)
+		deleted_tag.should_not be_nil
+
 	end
 
 end

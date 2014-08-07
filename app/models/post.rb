@@ -22,7 +22,7 @@ class Post < ActiveRecord::Base
 
   def remove_tag(tag_id)
     tag = self.tags.find(tag_id)
-    tag.delete()
+    self.tags.delete(tag)
   end
 
 	def add_image(image)
