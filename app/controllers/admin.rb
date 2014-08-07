@@ -57,8 +57,12 @@ end
 
 post '/admin/remove-tag-from-post' do
 	post_id = params[:post_id]
-	
+	tag_id = params[:tag_id]
 
+	cur_user = User.find(session[:user_id])
+	post_to_remove_tag = cur_user.posts.find(post_id)
+	post_to_remove_tag.remove_tag(tag_id)
+	return ""
 end
 
 get '/admin/homepage' do

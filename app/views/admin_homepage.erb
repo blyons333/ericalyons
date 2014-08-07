@@ -45,7 +45,6 @@ jQueryUI (draggable, droppable, effects) -->
 <%= erb(:new_post, :layout => false) %>
 
 
-<h2 class="center">Here are your posts:</h2>
 <div id='post_display_container'>
 	<% user.posts.ordered_by_reverse.each do |p| %>
 	<%= erb(:_single_post, :layout=>false, :locals => p.generate_view_locals()) %>

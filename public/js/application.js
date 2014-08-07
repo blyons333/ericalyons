@@ -28,8 +28,7 @@ function addEventListeners(){
       width: wWidth * 0.8,
       modal: true,
       close: function(){
-         $("button").remove(".tag_button");
-         $("input").remove(".tag_input_button");
+         Post.resetNewPostForm()
          numTags = 0;
       },
       buttons: {
@@ -81,7 +80,7 @@ function addEventListeners(){
       var tagId = tagIdRegex.exec(parentId);
       console.log("post id: " + postId[1]);
       console.log("tag id: " + tagId[1]);
-
+      Post.removeTag(postId[1], tagId[1]);
    });
 
    $('.action_button').button();
@@ -94,6 +93,11 @@ function createAndAddTagInput(numTags, elemToAppend){
    $('#'+tagId).blur(function(){
       convertInputToButton(tagId);
    });
+      $('#'+tagId).keypress(function(event){
+         if (event.which == 13){
+            convertInputToButton(tagId);
+         }
+      })
    $('#'+tagId).focus();
 }
 
@@ -142,15 +146,43 @@ Post.prototype.createNewPost = function() {
 }
 
 Post.removeTag = function(postId, tagId) {
-
+   $.ajax({
+       url: "/admin/remove-tag-from-post",
+      type: "POST",
+      data: {'post_id': postId, 'tag_id': tagId},
+      success: function(data){
+         tagButtonId = "post"+postId+"tag"+tagId;
+         removeTagButton(tagButtonId);
+      }
+   });
 }
 
 Post.resetNewPostForm = function() {
    $('#new_post_title').val("");
    $('#new_post_body').val("");
-   $('#new_post_form').hide();
+   // $('#new_post_form').hide();
+   $("button").remove(".tag_button");
+   $("input").remove(".tag_input_button");
 }
 
 Post.addPostToPage = function(data) {
    $('#post_display_container').prepend(data);
+
+   $('.tag').button({
+         icons: {
+            primary: "ui-icon-close"
+         }
+   });
+
+   $('span.ui-icon-close').on('click', function(){
+      var parentButton = $(this).parent();
+      var parentId = parentButton.attr('id');
+      var postIdRegex = /post(\d+)/
+      var tagIdRegex = /tag(\d+)/
+      var postId = postIdRegex.exec(parentId);
+      var tagId = tagIdRegex.exec(parentId);
+      console.log("post id: " + postId[1]);
+      console.log("tag id: " + tagId[1]);
+      removeTag(postId, tagId);
+   });
 }

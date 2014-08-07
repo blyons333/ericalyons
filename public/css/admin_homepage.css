@@ -1,3 +1,7 @@
+body {
+	font-family: 'Lato', sans-serif !important;
+}
+
 .inline{
 	display: inline-block;
 }
@@ -19,7 +23,7 @@
 #new_post_body {
 	margin-bottom:5px; 
 	width:95%;
-	height: 90%; 
+	height: 75%; 
 	padding: .4em;
 }
 
@@ -36,16 +40,20 @@
 
 .post_text {
 	font-size: 14px;
-	padding: 5px 0 0 0;
+	padding: 15px 0 0 0;
 	margin: 0px;
 }
 
 .post_create_date {
 	font-size: 10px;
-	padding: 5px 0 15px 0;
+	padding: 0 0 0 0;
 	margin: 0px;
 	text-align: right;
 	font-style: italic;
+}
+
+.post_tag_container {
+	padding: 15px 0 0 0;
 }
 
 .center {
@@ -59,8 +67,18 @@ h2 {
 	padding: 10px 0 10px 0;
 }
 
-.post {
+.action_button{
+	font-family: 'Lato', sans-serif !important;
+	font-size: 1em !important;
+}
 
+.tag {
+	font-family: 'Lato', sans-serif !important;
+	font-size: 12px !important;
+}
+
+.post {
+	padding: 55px 0 20px 0;
 }
 
 
