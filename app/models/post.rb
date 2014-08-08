@@ -50,6 +50,7 @@ class Post < ActiveRecord::Base
   			    :title => self.title, 
   			    :post_text => self.post_text, 
   			    :created_at => self.created_at,
-            :tags => self.tags}
+            :tags => self.tags, 
+            :images => self.images}
   end
 end

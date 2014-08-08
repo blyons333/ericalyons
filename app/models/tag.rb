@@ -20,7 +20,4 @@ class Tag < ActiveRecord::Base
 		return tag
 	end
 
-	def find_or_create_by(tag_name) 
-
-	end
 end

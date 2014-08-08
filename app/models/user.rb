@@ -1,4 +1,5 @@
 require 'bcrypt'
+require 'json'
 
   class User < ActiveRecord::Base
     has_many :posts
@@ -45,8 +46,10 @@ require 'bcrypt'
 
       #Add images to post
       unless properties[:images].blank?
+        puts properties[:images]
         properties[:images].each { |i|
-          new_post.add_image(i)
+          puts i[1].to_s
+          new_post.add_image(i[1])
         }
       end
 

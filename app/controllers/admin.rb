@@ -82,6 +82,11 @@ post '/admin/add-tag-to-post' do
 	return new_tag
 end
 
+post '/admin/get-available-tags' do
+	cur_user = User.find(session[:user_id])
+	return erb(:available_tags, :layout => false, :locals => {:unique_tags => cur_user.get_unique_tags()})
+end
+
 get '/admin/homepage' do
 	cur_user = User.find(session[:user_id])
 	return erb(:admin_homepage, 

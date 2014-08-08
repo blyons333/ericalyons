@@ -34,8 +34,38 @@ body {
 	padding: .4em;
 }
 
+.photo_url_input {
+	display: block;
+	width:95%; 
+	padding:.4em;
+}
+
+.photo_caption_input {
+	display: inline;
+	float: right;
+}
+
+.new_photo_div {
+	margin: 10px 0 10px 0;
+}
+
+.new_photo {
+	display: inline;
+	float: left;
+}
+
+.new_photo_url_label {
+	display: block;
+	padding: .4em 0 0 0;
+}
+
+.new_photo_caption_label {
+	display: inline;
+}
+
 #added_tags {
 	height: 35px;
+	padding: 5px 0 10px 0;
 }
 
 .post_title {
@@ -93,7 +123,7 @@ h2 {
 }
 
 .post {
-	padding: 55px 0 20px 0;
+	padding: 40px 0 35px 0;
 }
 
 

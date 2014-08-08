@@ -10,20 +10,32 @@ $(document).ready(function() {
   // when we try to bind to them
 
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
-  
-  wWidth = $(window).width();
-  wHeight = $(window).height();
 
+  setInstanceVariables();
   addEventListeners();
-  
-
-
+  setPhotoSizes();
 });
 
-function addEventListeners(){
-   Post.resetNewPostForm();
+function setInstanceVariables(){
+   wWidth = $(window).width();
+   wHeight = $(window).height();
+   var available_tags_y_val = $('#available_tags').position().top;
+   var available_tags_half_height = $('#available_tags').height()/2;
+   header_height = available_tags_y_val - available_tags_half_height - 40;
+}
 
+function addEventListeners(){
+   addNewPostDialogListeners();
+   addTagButtonIconsAndListeners();
+   addEventButtonIconsAndListeners();
+   addScrollListeners();  
+}
+
+function addNewPostDialogListeners() {
    var numTags = 0;
+   var numPhotos = 0;
+   
+   Post.resetNewPostForm();
 
    newPostDialog = $("#new_post_form").dialog({
       autoOpen: false,
@@ -33,6 +45,7 @@ function addEventListeners(){
       close: function(){
          Post.resetNewPostForm()
          numTags = 0;
+         numPhotos = 0;
       },
       buttons: {
          "Add Tag": function() { 
@@ -40,17 +53,32 @@ function addEventListeners(){
             createAndAddTagInput(numTags, $('#added_tags'));
          },
          "Add Photo": function() { 
-            console.log("add photo clicked!");
+            numPhotos++;
+            createAndAddPhotoInput(numPhotos, $('#added_photos'));
          },
          "Create Post": function(){
             var tagArray = new Array();
+            var photoArray = new Array();
             $('button.tag_button').each(function(){
                tagArray.push($(this).text());
             });
+
+            $('div.new_photo_div').each(function(){
+               var imgElement = $(this).children('img.new_photo');
+               var captionElement = $(this).children('input.photo_caption_input');
+               var imgURL = imgElement.attr("src");
+               var captionText = captionElement.val();
+               var newDict = {
+                  'URL' : imgURL,
+                  'caption' : captionText 
+               };
+               photoArray.push(newDict);
+            });
+
             var p = new Post($('#new_post_title').val(), 
                              $('#new_post_body').val(), 
                              tagArray, 
-                             null);
+                             photoArray);
             p.createNewPost();
             newPostDialog.dialog("close");
          }
@@ -67,7 +95,9 @@ function addEventListeners(){
       var formHeight = $('#new_post_form').height();
        
    });
+}
 
+function addTagButtonIconsAndListeners() {
    $('.tag').button({
          icons: {
             primary: "ui-icon-close"
@@ -90,8 +120,6 @@ function addEventListeners(){
       
    });
 
-   $('.action_button').button();
-
    $('.available_tag').draggable({
       revert: true,
       helper: "clone",
@@ -111,20 +139,133 @@ function addEventListeners(){
          Post.addTag(postId[1], tagId[1]);
       }
    });
-
-   header_height = $('#available_tags').position()
-
-   document.addEventListener ("scroll", updateTagPos);
 }
 
-function updateTagPos() {
+function addEventButtonIconsAndListeners() {
+   //Create the "action buttons" (menu buttons) into
+   //jquery buttons for the style
+   $('.action_button').button();
+}
+
+function addScrollListeners(){   
+   //Make the available tags "stick" to the top of the page
+   //as you scroll
+   document.addEventListener ("scroll", updateAvailableTagsPos);
+}
+
+function updateAvailableTagsPos() {
    
-   if (document.body.scrollTop < header_height.top){
+   if (document.body.scrollTop < header_height){
       $('#available_tags').css("position", "absolute");
       $('#available_tags').css("top", "");
    }else{
       $('#available_tags').css("position", "fixed");
       $('#available_tags').css("top", "0"); 
+   }
+}
+
+function setPhotoSizes() {
+   var postHeight = wHeight;
+   var postWidth = wWidth * .5;
+
+   $("img.post_image").each(function(){
+      shrinkPhoto($(this), postHeight, postWidth, 1, 1);
+   });
+}
+
+function createAndAddPhotoInput(numPhotos, elemToAppend) {
+   //New photo div
+   var photoDivId = "new_photo_div" + numPhotos;
+   var photoDiv = "<div id='" + photoDivId + "' class='new_photo_div'>Photo " + numPhotos + ": <br/></div>";
+   
+   //URL Input
+   var photoUrlId = "new_photo_url" + numPhotos;   
+   var urlInput = "<input id='" + photoUrlId + "' class='photo_url_input'></input>";
+   var urlInputLabel = "<label for='" + photoUrlId + "' class='new_photo_url_label'>URL </label>";
+   
+   //Caption input
+   // var photoCaptionId = "new_photo_caption" + numPhotos;
+   // var captionInput = "<input id='" + photoCaptionId + "' class='photo_caption_input'></input>";
+   // var captionInputLabel = "<label for='" + photoCaptionId + "' class='new_photo_label'> Caption </label>";
+   
+   //Append all the elements
+   elemToAppend.append(photoDiv);
+   var photoDivElem = $('#' + photoDivId);
+   photoDivElem.append(urlInputLabel);
+   photoDivElem.append(urlInput);
+   // photoDivElem.append(captionInputLabel);
+   // photoDivElem.append(captionInput);
+
+   //Add event listeners for onblur and enter actions
+   $('#'+photoUrlId).blur(function() {
+      convertInputToImage(photoUrlId, photoDivId, numPhotos);
+   });
+
+   $('#'+photoUrlId).keypress(function(event) {
+      if (event.which == 13) {
+        convertInputToImage(photoUrlId, photoDivId, numPhotos);
+      }
+   });
+
+   //Set the focus to the URL input box
+   $('#'+photoUrlId).focus();
+}
+
+function shrinkPhoto(elemToShrink, maxHeight, maxWidth, heightReduce, widthReduce) {
+   var imageHeight = elemToShrink.height();
+   var imageWidth = elemToShrink.width();
+         
+   if (imageHeight >= maxHeight || imageWidth >= maxWidth) {
+      percentHeightToReduce = (maxHeight/heightReduce)/imageHeight;
+      percentWidthToReduce = (maxWidth/widthReduce)/imageWidth;
+
+      var percentToReduce = 1;
+
+      if (percentHeightToReduce < 1 && percentHeightToReduce <= percentWidthToReduce) {
+         percentToReduce = percentHeightToReduce;
+      }else if (percentWidthToReduce < 1 && percentWidthToReduce < percentHeightToReduce) {
+         percentToReduce = percentWidthToReduce
+      }
+
+      elemToShrink.height(imageHeight * percentToReduce);
+      elemToShrink.width(imageWidth * percentToReduce);
+   }
+}
+
+function convertInputToImage(inputId, photoDivId, numPhotos) {
+   var dialogHeight = wHeight * .8;
+   var dialogWidth = wWidth * .8;
+   //Get the image url
+   var imageInputElement = $('#'+inputId);
+   var imageURL = imageInputElement.val();
+   if (imageURL != "") {
+      //Replace the input box with an image, remove the label
+      var imageHtml = "<img id='"+inputId+"' src='" + imageURL + "' class='new_photo' alt='Problem with image URL'>";
+      imageInputElement.replaceWith(imageHtml);
+      $('label[for='+inputId+']').remove();
+
+      //Resize the image to an appropriate size,
+      //if necessary
+      var imageElement = $('#'+inputId);
+      imageElement.load(function(){
+         shrinkPhoto($(this), dialogHeight - 100, dialogWidth - 100, 4, 2);
+
+         //Caption input
+         var photoCaptionId = "new_photo_caption" + numPhotos;
+         var captionInput = "<textarea id='" + photoCaptionId + "' class='photo_caption_input'></textarea>";
+         var captionInputLabel = "<label for='" + photoCaptionId + "' class='new_photo_caption_label'> Caption </label>";
+         var photoDivElem = $('#' + photoDivId);
+         photoDivElem.append(captionInput);
+         var captionWidth = dialogWidth - $(this).width() - 55;
+         var captionHeight = $(this).height() - 5;
+         var captionElem = $('#' + photoCaptionId);
+         captionElem.height(captionHeight);
+         captionElem.width(captionWidth);
+         captionElem.attr("placeholder", "Caption (optional)");
+
+   });
+
+      imageInputElement.unbind()
    }
 }
 
@@ -157,7 +298,7 @@ function convertInputToButton(tagId) {
       var uiCloseIcon = $('#'+tagId).children('span.ui-icon-close');
       console.log(uiCloseIcon);
       uiCloseIcon.on("click", function(event) {
-         removeTagButton('#'+tagId);
+         removeElement('#'+tagId);
       });
       tagElement.unbind();
    }
@@ -168,23 +309,39 @@ function createTagButton(buttonId, tagText){
 }
 
 
-function removeTagButton(tagId) {
-   var tagElement = $(tagId);
-   tagElement.remove();
+function removeElement(elementId) {
+   var element = $(elementId);
+   element.remove();
 }
 
-function Post(title, body, tags, image) {
+function refreshAvailableTags() {
+   $.ajax({
+      url: "/admin/get-available-tags",
+      type: "POST",
+      data: {},
+      success: function(data){
+         available_tags_div = $('#available_tags_cntnr');
+         available_tags_div.replaceWith(data);
+         addTagButtonIconsAndListeners();
+      }
+   });
+}
+
+function Post(title, body, tags, images) {
    this.title = title;
    this.body = body;
    this.tags = tags;
-   this.image = image;
+   this.images = images;
 }
 
 Post.prototype.createNewPost = function() {
    $.ajax({
        url: "/admin/add-post",
       type: "POST",
-      data: {'title': this.title, 'post_text': this.body, 'tags': this.tags},
+      data: {'title': this.title, 
+             'post_text': this.body, 
+             'tags': this.tags, 
+             'images': this.images},
       success: function(data){
          Post.addPostToPage(data);
          Post.resetNewPostForm();
@@ -199,7 +356,7 @@ Post.removeTag = function(postId, tagId) {
       data: {'post_id': postId, 'tag_id': tagId},
       success: function(data){
          tagButtonId = "post"+postId+"tag"+tagId;
-         removeTagButton('#'+tagButtonId);
+         removeElement('#'+tagButtonId);
       }
    });
 }
@@ -223,57 +380,23 @@ Post.addTagButton = function(postId, tagButtonId, tagButton) {
    post_tag_div = $('#post_tag_container'+postId);
    post_tag_div.append(tagButton);
 
-   $('#'+tagButtonId).button({
-      icons: {
-         primary: "ui-icon-close"
-      }
-   });
-
-   $('span.ui-icon-close').on('click', function(){
-      var parentButton = $(this).parent();
-      var parentId = parentButton.attr('id');
-      
-      var postId = postIdRegex.exec(parentId);
-      var tagId = tagIdRegex.exec(parentId);
-      console.log("post " + postId);
-      console.log("tag " + tagId);
-      if (postId == null && tagId.length > 1) {
-         Tag.removeTag(tagId[1]);
-      }else if (postId.length > 1 && tagId.length > 1){
-         Post.removeTag(postId[1], tagId[1]);
-      }
-      
-   });
+   addTagButtonIconsAndListeners();
 }
 
 Post.resetNewPostForm = function() {
    $('#new_post_title').val("");
    $('#new_post_body').val("");
-   // $('#new_post_form').hide();
+   //Remove new tag inputs
    $("button").remove(".tag_button");
    $("input").remove(".tag_input_button");
+   //Remove new photo inputs
+   $("div").remove(".new_photo_div");
 }
 
 Post.addPostToPage = function(data) {
    $('#post_display_container').prepend(data);
-
-   $('.tag').button({
-         icons: {
-            primary: "ui-icon-close"
-         }
-   });
-
-   $('span.ui-icon-close').on('click', function(){
-      var parentButton = $(this).parent();
-      var parentId = parentButton.attr('id');
-      var postIdRegex = /post(\d+)/
-      var tagIdRegex = /tag(\d+)/
-      var postId = postIdRegex.exec(parentId);
-      var tagId = tagIdRegex.exec(parentId);
-      console.log("post id: " + postId[1]);
-      console.log("tag id: " + tagId[1]);
-      removeTag(postId, tagId);
-   });
+   refreshAvailableTags();
+   addTagButtonIconsAndListeners();
 }
 
 function Tag(){
@@ -287,7 +410,7 @@ Tag.removeTag = function(tagId) {
       data: {'tag_id': tagId},
       success: function(data){
          tagButtonId = "tag"+tagId;
-         removeTagButton('*[id*='+tagButtonId+']');
+         removeElement('*[id*='+tagButtonId+']');
       }
    });
 }

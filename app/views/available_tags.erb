@@ -1,0 +1,6 @@
+<div id='available_tags_cntnr'>
+	<h2>Your tags:</h2>
+	<% unique_tags.each do |t| %>
+		<button id='<%="tag#{t.id}"%>' class='ui-widget-content tag available_tag'><%=t.name%></button>
+	<% end %>
+</div>

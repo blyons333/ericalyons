@@ -18,11 +18,6 @@ jQueryUI (draggable, droppable, effects) -->
 <span class="inline action_button_span">
 	<h3>Update Posts</h3> 
 </span>
-<!-- Add tags -->
-<!-- Upload pictures -->
-<span class="inline action_button_span">
-	<h3>Add Tags</h3>
-</span>
 
 <span class="inline action_button_span">
 	<h3>Delete Posts</h3>
@@ -44,11 +39,8 @@ jQueryUI (draggable, droppable, effects) -->
 
 <%= erb(:new_post, :layout => false) %>
 
-<div id='available_tags'>
-	<h2>Your tags:</h2>
-	<% user.get_unique_tags.each do |t| %>
-		<button id='<%="tag#{t.id}"%>' class='ui-widget-content tag available_tag'><%=t.name%></button>
-	<% end %>
+<div id = 'available_tags'>
+	<%= erb(:available_tags, :layout => false, :locals => {:unique_tags => user.get_unique_tags()}) %>
 </div>
 
 
