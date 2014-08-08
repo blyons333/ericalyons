@@ -31,6 +31,7 @@ require 'json'
     end
 
     def add_post(properties)
+      puts properties
       #Create a new post
       new_post = posts.create{ |p|
           p.title = properties[:title]
@@ -46,14 +47,17 @@ require 'json'
 
       #Add images to post
       unless properties[:images].blank?
-        puts properties[:images]
         properties[:images].each { |i|
-          puts i[1].to_s
           new_post.add_image(i[1])
         }
       end
 
       return new_post
+    end
+
+    def delete_post(post_id)
+      post_to_delete = posts.find(post_id)
+      posts.delete(post_to_delete)
     end
 
     def add_tag_to_post(post_id, tag_id)

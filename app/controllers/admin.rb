@@ -39,20 +39,23 @@ post '/admin/add-post' do
 	tags = params[:tags]
 	images = params[:images]
 
-	unless title == "" && post_text == ""
-		cur_user = User.find(session[:user_id])
-		new_post = cur_user.add_post({:title => title,
-						   			  :post_text => post_text,
-						   			  :tags => tags,
-						   			  :images => images})
+	cur_user = User.find(session[:user_id])
+	new_post = cur_user.add_post({:title => title,
+					   			  :post_text => post_text,
+					   			  :tags => tags,
+					   			  :images => images})
 
-		return erb(:_single_post, 
-				   :layout => false, 
-				   :locals => new_post.generate_view_locals())
-	else
-		return ""
-	end
+	return erb(:_single_post, 
+			   :layout => false, 
+			   :locals => new_post.generate_view_locals())
 
+end
+
+post '/admin/delete-post' do
+	post_id = params[:post_id]
+	cur_user = User.find(session[:user_id])
+	cur_user.delete_post(post_id)
+	return ""
 end
 
 post '/admin/remove-tag-from-post' do

@@ -11,7 +11,7 @@ class Post < ActiveRecord::Base
 	include ActiveModel::AttributeMethods
   belongs_to :user
   scope :ordered_by_reverse, -> { joins(:user).order('posts.created_at DESC') }
-  has_many :images
+  has_many :images, dependent: :destroy
   has_many :post_tags, dependent: :destroy
   has_many :tags, through: :post_tags
 
@@ -38,7 +38,9 @@ class Post < ActiveRecord::Base
 	def add_image(image)
 		new_image = Image.create { |i|
 			i.url = image[:URL]
-			unless image[:caption].blank?
+			if image[:caption].blank?
+        i.caption = ""
+      else
 				i.caption = image[:caption]
 			end
 		}

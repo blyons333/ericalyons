@@ -1,6 +1,8 @@
 var wWidth = 0;
 var wHeight = 0;
 var postIdRegex = /post(\d+)/;
+var deletePostRegex = /delete_post(\d+)/;
+var postContentIdRegex = /post_content(\d+)/;
 var tagIdRegex = /tag(\d+)/;
 var header_height = 0;
 
@@ -28,7 +30,8 @@ function addEventListeners(){
    addNewPostDialogListeners();
    addTagButtonIconsAndListeners();
    addEventButtonIconsAndListeners();
-   addScrollListeners();  
+   addScrollListeners();
+   addEditAndDeleteListeners();
 }
 
 function addNewPostDialogListeners() {
@@ -78,6 +81,8 @@ function addNewPostDialogListeners() {
                photoArray.push(newDict);
             });
 
+            console.log($('#new_post_title').val());
+
             var p = new Post($('#new_post_title').val(), 
                              $('#new_post_body').val(), 
                              tagArray, 
@@ -114,8 +119,6 @@ function addTagButtonIconsAndListeners() {
       
       var postId = postIdRegex.exec(parentId);
       var tagId = tagIdRegex.exec(parentId);
-      console.log("post " + postId);
-      console.log("tag " + tagId);
       if (postId == null && tagId.length > 1) {
          Tag.removeTag(tagId[1]);
       }else if (postId.length > 1 && tagId.length > 1){
@@ -137,9 +140,7 @@ function addTagButtonIconsAndListeners() {
       drop: function(event, ui) {
          droppedTagId = ui.draggable.attr('id');
          tagId = tagIdRegex.exec(droppedTagId);
-         console.log(tagId[1]);
          postId = postIdRegex.exec(($(this)[0]).id);
-         console.log(postId[1]);
          Post.addTag(postId[1], tagId[1]);
       }
    });
@@ -155,6 +156,41 @@ function addScrollListeners(){
    //Make the available tags "stick" to the top of the page
    //as you scroll
    document.addEventListener ("scroll", updateAvailableTagsPos);
+}
+
+function addEditAndDeleteListeners(){
+   // $('.post_edit_icons').css('visibility', 'hidden');
+   
+   $('.delete_post_icon').on('click', function() {
+      var elemId = $(this).attr("id");
+      postId = deletePostRegex.exec(elemId)[1];
+      Post.deletePost(postId);
+
+   });
+
+
+
+   // $('.post').mouseover(function() {
+   //    var elemId = $(this).attr("id");
+   //    var postId = postIdRegex.exec(elemId)[1];
+   //    var iconsDivId = "editPost" + postId;
+   //    $('#'+iconsDivId).css('visibility', 'visible');
+   // });
+
+   // $('.post').mouseout(function() {
+   //    var elemId = $(this).attr("id");
+   //    var postId = postIdRegex.exec(elemId)[1];
+   //    var iconsDivId = "editPost" + postId;
+   //    $('#'+iconsDivId).css('visibility', 'hidden');
+   // });
+
+   // $('.post_edit_icons').mouseover(function(){
+   //    $(this).css('visibility', 'visible');
+   // });
+
+   // $('.post_edit_icons').mouseout(function(){
+   //    $(this).css('visibility', 'hidden');
+   // });
 }
 
 function updateAvailableTagsPos() {
@@ -267,6 +303,7 @@ function convertInputToImage(inputId, photoDivId, numPhotos) {
          captionElem.height(captionHeight);
          captionElem.width(captionWidth);
          captionElem.attr("placeholder", "Caption (optional)");
+         captionElem.focus();
    });
       //Scroll to the bottom of the form
       var myDiv = $('#new_post_form');
@@ -280,15 +317,25 @@ function createAndAddTagInput(numTags, elemToAppend){
    var tagId = "new_tag" + numTags;
    var inputHtml = "<input id='" + tagId + "' class='tag_input_button'></input>"
    elemToAppend.append(inputHtml);
-   $('#'+tagId).blur(function(){
+   var tagInput = $('#'+tagId);
+   var availableTagsArr = new Array();
+   $('.available_tag').each(function(){
+      availableTagsArr.push($(this).text());
+   })
+
+   tagInput.autocomplete({
+      source: availableTagsArr
+    });
+
+   tagInput.blur(function(){
       convertInputToButton(tagId);
    });
-      $('#'+tagId).keypress(function(event){
+   tagInput.keypress(function(event){
          if (event.which == 13){
             convertInputToButton(tagId);
          }
       })
-   $('#'+tagId).focus();
+   tagInput.focus();
 }
 
 function convertInputToButton(tagId) {
@@ -303,7 +350,6 @@ function convertInputToButton(tagId) {
          }
       });
       var uiCloseIcon = $('#'+tagId).children('span.ui-icon-close');
-      console.log(uiCloseIcon);
       uiCloseIcon.on("click", function(event) {
          removeElement('#'+tagId);
       });
@@ -406,6 +452,19 @@ Post.addPostToPage = function(data) {
    refreshAvailableTags();
    addTagButtonIconsAndListeners();
    setPhotoSizes();
+}
+
+Post.deletePost = function(postId) {
+   $.ajax({
+      url: "/admin/delete-post",
+      type: "POST",
+      data: {'post_id': postId},
+      success: function(data){
+         var elemToRemove = "#post_container"+postId;
+         removeElement(elemToRemove);
+         refreshAvailableTags();
+      }
+   });
 }
 
 function Tag(){

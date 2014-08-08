@@ -1,23 +1,25 @@
-<div class="post center" id="post<%= id %>">
-	<p class="post_create_date"> <%= created_at.to_time.strftime("Posted %B %d, %Y %I:%M%p") %></p>
-	<p class="post_title"><%= title %></p>
-	<p class="post_text"><%= post_text %></p>
+<div class="post_container center" id="post_container<%= id %>">
+	<div id='<%= "post#{id}" %>' class="post">
+		<p class="post_create_date"> <%= created_at.to_time.strftime("Posted %B %d, %Y %I:%M%p") %></p>
+		<p class="post_title"><%= title %></p>
+		<p class="post_text"><%= post_text %></p>
 
-	<!-- Container for images -->
-	<div id="photo_container<%= id %>" class="photo_container">
-		<% images.each do |i| %>
-			<img id='<%= "post#{id}img#{i.id}" %>'src='<%= i.url %>' class="post_image" alt="Error with image url">
-			<% if i.caption != nil %>
+		<!-- Container for images -->
+		<div id="photo_container<%= id %>" class="photo_container">
+			<% images.each do |i| %>
+				<img id='<%= "post#{id}img#{i.id}" %>'src='<%= i.url %>' class="post_image" alt="Error with image url">
 				<p id='<%= "post#{id}img#{i.id}caption" %>' class="post_image_caption"><%= i.caption %></p>
 			<% end %>
-		<% end %>
-	</div>
+		</div>
 
-	<!-- Container for tags -->
-	<div id="post_tag_container<%= id %>" class="post_tag_container">
-		<% tags.each do |t| %>
-			<button id='<%="post#{id}tag#{t.id}"%>' class='tag'><%=t.name%></button>
-		<% end %>
+		<!-- Container for tags -->
+		<div id="post_tag_container<%= id %>" class="post_tag_container">
+			<% tags.each do |t| %>
+				<button id='<%="post#{id}tag#{t.id}"%>' class='tag'><%=t.name%></button>
+			<% end %>
+		</div>
 	</div>
-	
+	<div id='<%= "editPost#{id}" %>' class="post_edit_icons">
+		<img id='<%= "delete_post#{id}" %>' src="../img/trashIcon.png" class="delete_post_icon" />
+	</div>
 </div>
