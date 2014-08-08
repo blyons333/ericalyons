@@ -21,7 +21,7 @@ function setInstanceVariables(){
    wHeight = $(window).height();
    var available_tags_y_val = $('#available_tags').position().top;
    var available_tags_half_height = $('#available_tags').height()/2;
-   header_height = available_tags_y_val - available_tags_half_height - 40;
+   header_height = available_tags_y_val - available_tags_half_height;
 }
 
 function addEventListeners(){
@@ -42,6 +42,9 @@ function addNewPostDialogListeners() {
       height: wHeight * 0.8,
       width: wWidth * 0.8,
       modal: true,
+      beforeClose: function(event, ui) {
+         $("body").css({ overflow: 'inherit' })
+      },
       close: function(){
          Post.resetNewPostForm()
          numTags = 0;
@@ -65,7 +68,7 @@ function addNewPostDialogListeners() {
 
             $('div.new_photo_div').each(function(){
                var imgElement = $(this).children('img.new_photo');
-               var captionElement = $(this).children('input.photo_caption_input');
+               var captionElement = $(this).children('textarea.photo_caption_input');
                var imgURL = imgElement.attr("src");
                var captionText = captionElement.val();
                var newDict = {
@@ -91,6 +94,7 @@ function addNewPostDialogListeners() {
       wWidth = $(window).width();
       wHeight = $(window).height();
       $("#new_post_form").data("tags", new Array());
+      $("body").css({ overflow: 'hidden' });
       newPostDialog.dialog("open");
       var formHeight = $('#new_post_form').height();
        
@@ -243,14 +247,15 @@ function convertInputToImage(inputId, photoDivId, numPhotos) {
       var imageHtml = "<img id='"+inputId+"' src='" + imageURL + "' class='new_photo' alt='Problem with image URL'>";
       imageInputElement.replaceWith(imageHtml);
       $('label[for='+inputId+']').remove();
-
-      //Resize the image to an appropriate size,
-      //if necessary
+      
       var imageElement = $('#'+inputId);
       imageElement.load(function(){
+
+         //Resize the image to an appropriate size,
+         //if necessary
          shrinkPhoto($(this), dialogHeight - 100, dialogWidth - 100, 4, 2);
 
-         //Caption input
+         //Add caption input
          var photoCaptionId = "new_photo_caption" + numPhotos;
          var captionInput = "<textarea id='" + photoCaptionId + "' class='photo_caption_input'></textarea>";
          var captionInputLabel = "<label for='" + photoCaptionId + "' class='new_photo_caption_label'> Caption </label>";
@@ -262,10 +267,12 @@ function convertInputToImage(inputId, photoDivId, numPhotos) {
          captionElem.height(captionHeight);
          captionElem.width(captionWidth);
          captionElem.attr("placeholder", "Caption (optional)");
-
    });
-
-      imageInputElement.unbind()
+      //Scroll to the bottom of the form
+      var myDiv = $('#new_post_form');
+      myDiv.animate({ scrollTop: myDiv.prop("scrollHeight") - myDiv.height() }, 400);
+      
+      imageInputElement.unbind();
    }
 }
 
@@ -305,6 +312,7 @@ function convertInputToButton(tagId) {
 }
 
 function createTagButton(buttonId, tagText){
+   //Create the tag as a button
    return "<button type='button' id='" + buttonId + "' class='tag'>" + tagText + "</button>"
 }
 
@@ -397,6 +405,7 @@ Post.addPostToPage = function(data) {
    $('#post_display_container').prepend(data);
    refreshAvailableTags();
    addTagButtonIconsAndListeners();
+   setPhotoSizes();
 }
 
 function Tag(){
