@@ -426,6 +426,7 @@ Post.removeTag = function(postId, tagId) {
       success: function(data){
          tagButtonId = "post"+postId+"tag"+tagId;
          removeElement('#'+tagButtonId);
+         addEditAndDeleteListeners();
       }
    });
 }
@@ -494,6 +495,7 @@ Tag.removeTag = function(tagId) {
       success: function(data){
          tagButtonId = "tag"+tagId;
          removeElement('*[id*='+tagButtonId+']');
+         addEditAndDeleteListeners();
       }
    });
 }
