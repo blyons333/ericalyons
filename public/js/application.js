@@ -208,7 +208,7 @@ function updateAvailableTagsPos() {
 }
 
 function setPhotoSizes() {
-   var postHeight = wHeight;
+   var postHeight = wHeight * .9;
    var postWidth = wWidth * .5;
 
    $("img.post_image").each(function(){
