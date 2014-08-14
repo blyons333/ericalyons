@@ -59,7 +59,9 @@ function addNewPostDialogListeners() {
       buttons: {
          "Add Tag": function() { 
             numTags++;
-            createAndAddTagInput(numTags, $('#added_tags'));
+            createAndAddTagInput("new_tag" + numTags, function(elemToAdd){
+               $('#added_tags').append(elemToAdd);
+            });
          },
          "Add Photo": function() { 
             numPhotos++;
@@ -316,10 +318,10 @@ function convertInputToImage(inputId, photoDivId, numPhotos) {
    }
 }
 
-function createAndAddTagInput(numTags, elemToAppend){
-   var tagId = "new_tag" + numTags;
+function createAndAddTagInput(tagId, addToPageFunction){
    var inputHtml = "<input id='" + tagId + "' class='tag_input_button'></input>"
-   elemToAppend.append(inputHtml);
+   addToPageFunction(inputHtml);
+   //elemToAppend.append(inputHtml);
    var tagInput = $('#'+tagId);
    var availableTagsArr = new Array();
    $('.available_tag').each(function(){
@@ -356,6 +358,16 @@ function convertInputToButton(tagId) {
       uiCloseIcon.on("click", function(event) {
          removeElement('#'+tagId);
       });
+
+      $('#'+tagId).click(function() {
+         createAndAddTagInput(tagId, function(elemToAdd) {
+            var elemToReplace = $('#'+tagId);
+            var tagText = elemToReplace.text();
+            elemToReplace.replaceWith(elemToAdd);
+            $('#'+tagId).val(tagText);
+         });
+      });
+
       tagElement.unbind();
    }
 }
