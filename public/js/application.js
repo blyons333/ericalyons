@@ -414,6 +414,7 @@ Post.prototype.createNewPost = function() {
       success: function(data){
          Post.addPostToPage(data);
          Post.resetNewPostForm();
+         addEditAndDeleteListeners();
       }
    });
 }
