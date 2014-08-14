@@ -21,12 +21,12 @@ $(document).ready(function() {
 function setInstanceVariables(){
    wWidth = $(window).width();
    wHeight = $(window).height();
-   var available_tags_y_val = $('#available_tags').position().top;
+   var available_tags_y_val = $('#available_tags').offset().top;
    var available_tags_half_height = $('#available_tags').height()/2;
-   header_height = available_tags_y_val - available_tags_half_height;
-   console.log("y val: " + available_tags_y_val);
-   console.log("half height: " + available_tags_half_height);
-   console.log("header height: " + header_height);
+   header_height = available_tags_y_val; //- available_tags_half_height;
+   // console.log("y val: " + available_tags_y_val);
+   // console.log("half height: " + available_tags_half_height);
+   // console.log("header height: " + header_height);
 }
 
 function addEventListeners(){
