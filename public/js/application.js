@@ -4,7 +4,7 @@ var postIdRegex = /post(\d+)/;
 var deletePostRegex = /delete_post(\d+)/;
 var postContentIdRegex = /post_content(\d+)/;
 var tagIdRegex = /tag(\d+)/;
-var header_height = 0;
+var headerHeight = 0;
 
 $(document).ready(function() {
   // This is called after the document has loaded in its entirety
@@ -21,12 +21,12 @@ $(document).ready(function() {
 function setInstanceVariables(){
    wWidth = $(window).width();
    wHeight = $(window).height();
-   var available_tags_y_val = $('#available_tags').offset().top;
-   var available_tags_half_height = $('#available_tags').height();
-   header_height = available_tags_y_val - available_tags_half_height;
+   var availableTagsYVal = $('#available_tags').position().top;
+   var newPostFormHeight = $('#new_post_form').height();
+   headerHeight = availableTagsYVal - newPostFormHeight;
    // console.log("y val: " + available_tags_y_val);
    // console.log("half height: " + available_tags_half_height);
-   // console.log("header height: " + header_height);
+   // console.log("header height: " + headerHeight);
 }
 
 function addEventListeners(){
@@ -83,8 +83,6 @@ function addNewPostDialogListeners() {
                };
                photoArray.push(newDict);
             });
-
-            console.log($('#new_post_title').val());
 
             var p = new Post($('#new_post_title').val(), 
                              $('#new_post_body').val(), 
@@ -158,7 +156,7 @@ function addEventButtonIconsAndListeners() {
 function addScrollListeners(){   
    //Make the available tags "stick" to the top of the page
    //as you scroll
-   document.addEventListener ("scroll", updateAvailableTagsPos);
+   $(window).scroll(updateAvailableTagsPos);
 }
 
 function addEditAndDeleteListeners(){
@@ -198,9 +196,9 @@ function addEditAndDeleteListeners(){
 
 function updateAvailableTagsPos() {
    
-   if (document.body.scrollTop < header_height){
-      $('#available_tags').css("position", "absolute");
-      $('#available_tags').css("top", "");
+   if ($(window).scrollTop() < headerHeight){
+      $('#available_tags').css("position", "static");
+      $('#available_tags').css("top", "auto");
    }else{
       $('#available_tags').css("position", "fixed");
       $('#available_tags').css("top", "0"); 
@@ -307,10 +305,12 @@ function convertInputToImage(inputId, photoDivId, numPhotos) {
          captionElem.width(captionWidth);
          captionElem.attr("placeholder", "Caption (optional)");
          captionElem.focus();
+
+         //Scroll to the bottom of the form
+         var myDiv = $('#new_post_form');
+         myDiv.animate({ scrollTop: myDiv.prop("scrollHeight") - myDiv.height() }, 400);
    });
-      //Scroll to the bottom of the form
-      var myDiv = $('#new_post_form');
-      myDiv.animate({ scrollTop: myDiv.prop("scrollHeight") - myDiv.height() }, 400);
+
       
       imageInputElement.unbind();
    }
