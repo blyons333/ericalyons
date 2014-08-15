@@ -47,12 +47,14 @@ class Post < ActiveRecord::Base
 		self.images.push(new_image)
 	end
 
-  def generate_view_locals()
+  def generate_view_locals(show_edit_cntnr)
   	return {:id => self.id, 
   			    :title => self.title, 
   			    :post_text => self.post_text, 
   			    :created_at => self.created_at,
             :tags => self.tags, 
-            :images => self.images}
+            :images => self.images,
+            :show_edit_cntnr => show_edit_cntnr
+          }
   end
 end

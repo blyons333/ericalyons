@@ -1,0 +1,29 @@
+var wWidth = 0;
+var wHeight = 0;
+
+$(document).ready(function() {
+  // This is called after the document has loaded in its entirety
+  // This guarantees that any elements we bind to will exist on the page
+  // when we try to bind to them
+
+  // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
+
+  setInstanceVariables();
+  addEventListeners();
+  setPhotoSizes(wHeight, wWidth);
+});
+
+function setInstanceVariables(){
+   wWidth = $(window).width();
+   wHeight = $(window).height();
+}
+
+function addEventListeners(){
+   addTagButtonIconsAndListeners();
+}
+
+function addTagButtonIconsAndListeners() {
+   $('.tag').button({
+   });
+}
+

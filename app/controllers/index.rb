@@ -2,7 +2,10 @@
 
 get '/' do
   # Look in app/views/index.erb
-  erb :index
+  user_erica = User.where(username: 'erica')[0]
+  return erb(:index, 
+		     :layout => true, 
+		     :locals => {:user => user_erica})
 end
 
 get '/about' do
@@ -10,7 +13,10 @@ get '/about' do
 end
 
 get '/blog' do
-	erb :blog
+	user_erica = User.where(username: 'erica')[0]
+	return erb(:blog, 
+		       :layout => true, 
+		       :locals => {:user => user_erica})
 end
 
 get '/contact' do

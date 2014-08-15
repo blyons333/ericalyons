@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <script src="/js/index.js"></script>
     <title>Erica Lyons</title>
   </head>
   <body>
@@ -10,10 +11,31 @@
       <h1 id="mainTitle">THE QUIET OBSERVER</h1>
       <!--<h3 class="italic">"Beauty is hidden in everything, just learn how to observe" -Ritu Ghatourey</h3>-->
       <div id="linkCntnr">
-        <a href="about">about</a>
+        <!-- <a href="about">about</a>
         <a href="blog">blog</a>
-        <a href="contact">contact</a>
+        <a href="contact">contact</a> -->
+        <a class='photo' href="#aboutBegin">about</a>
+        <a class='photo' href="#contactSection">contact</a>
+        <a class='photo' href="#blogSection">blog</a>
       </div>
     </div>
+
+    <div id="aboutSection">
+      <%= erb(:about, 
+              :layout => false) %>
+    </div>
+
+    <div id="contactSection">
+      <%= erb(:contact, 
+              :layout => false) %>
+    </div>
+
+    <div id="blogSection">
+      <%= erb(:blog, 
+              :layout => false, 
+              :locals => {:user => user}) %>
+    </div>
+
+
   </body>
 </html>

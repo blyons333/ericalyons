@@ -3,6 +3,7 @@
 	position: absolute;
 	height: 100%;
 	width: 100%;
+	display: block;
 	-webkit-background-size: cover;
   	-moz-background-size: cover;
   	-o-background-size: cover;
@@ -34,10 +35,10 @@ a{
 	font-size: 25px;
 }
 
-a:link {color:white}    /* unvisited link */
-a:visited {color:white;} /* visited link */
-a:hover {color:#9966FF;}   /* mouse over link */
-a:active {color:white;} 
+a:link.photo {color:white}    /* unvisited link */
+a:visited.photo {color:white;} /* visited link */
+a:hover.photo {color:#9966FF;}   /* mouse over link */
+a:active.photo {color:white;} 
 
 /*
 a:hover{
