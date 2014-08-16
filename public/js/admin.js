@@ -21,8 +21,9 @@ $(document).ready(function() {
    if (images.length === 0) {
       //Nope, we're done loading images, set heights
       //and widths
-       setHeightsAndWidths();
-       addScrollListeners();
+       setInstanceVariables();
+       addEventListeners();
+       setPhotoSizes(wHeight, wWidth);
    }else {
        // We're waiting for some images, do that
        loaded = 0;
@@ -30,14 +31,15 @@ $(document).ready(function() {
            // One of them loaded; was it the last one?
            if (++loaded === images.length) {
                // Yup, we're done
-               setHeightsAndWidths();
-               addScrollListeners();
+               setInstanceVariables();
+               addEventListeners();
+               setPhotoSizes(wHeight, wWidth);
            }
        }); 
    }
-  setInstanceVariables();
-  addEventListeners();
-  setPhotoSizes(wHeight, wWidth);
+  // setInstanceVariables();
+  // addEventListeners();
+  // setPhotoSizes(wHeight, wWidth);
 });
 
 function setInstanceVariables(){
