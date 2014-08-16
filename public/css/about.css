@@ -12,6 +12,12 @@
 	padding-top: 15px;
 }
 
+.about_img {
+	width: 50%;
+	padding-top: 15px;
+	padding-left: 25%;
+}
+
 p{
 	font-family: 'Lato', sans-serif;
 }

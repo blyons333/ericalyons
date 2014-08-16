@@ -28,3 +28,7 @@ a{
 	font-size: 20px;
 	font-weight: bold;
 }
+
+a:hover {
+	color: #6343A6;
+}
