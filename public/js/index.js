@@ -18,8 +18,7 @@ $(document).ready(function() {
 	  	//and widths
 	    setHeightsAndWidths();
 	    addScrollListeners();
-	}
-	else {
+	}else {
 	    // We're waiting for some images, do that
 	    loaded = 0;
 	    images.load(function() {

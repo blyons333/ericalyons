@@ -58,7 +58,13 @@ a:active.content {color:#6343A6;}
 a.active {
 	font-size: 35px;
 	font-weight: bold;
+	color: #6343A6;
 }
+
+a:link.active {color: #6343A6;}
+a:visited.active{color: #6343A6;}
+a:hover.active{color: #6343A6;}
+a:active.active{color: #6343A6;}
 
 
 /*

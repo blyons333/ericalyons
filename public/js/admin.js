@@ -12,7 +12,29 @@ $(document).ready(function() {
   // when we try to bind to them
 
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
+  var loaded = 0;
+   var images = $(window).find("img").filter(function(index, img) {
+        return !img.complete;
+      });
 
+   // Find any?
+   if (images.length === 0) {
+      //Nope, we're done loading images, set heights
+      //and widths
+       setHeightsAndWidths();
+       addScrollListeners();
+   }else {
+       // We're waiting for some images, do that
+       loaded = 0;
+       images.load(function() {
+           // One of them loaded; was it the last one?
+           if (++loaded === images.length) {
+               // Yup, we're done
+               setHeightsAndWidths();
+               addScrollListeners();
+           }
+       }); 
+   }
   setInstanceVariables();
   addEventListeners();
   setPhotoSizes(wHeight, wWidth);
