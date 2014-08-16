@@ -8,15 +8,52 @@ $(document).ready(function() {
 
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
 
-  wWidth = $(window).width();
-  wHeight = $(window).height();
-  var aboutSectionHeight = $('#aboutSection').height();
-  var aboutSectionPadding = (wHeight - aboutSectionHeight)/2;
-  $('#aboutSection').css("padding-top", aboutSectionPadding + wHeight + 20);
-  $('#aboutSection').css("padding-bottom", aboutSectionPadding + 20);
-  var contactContainerHeight = $('.vertCenter').height();
-  var contactContainerPadding = (wHeight - contactContainerHeight)/2;
-  $('.vertCenter').css("padding-top", contactContainerPadding);
-  $('.vertCenter').css("padding-bottom", contactContainerPadding);
-  $('.vertCenter').css("background-color", "#EDEDED");
+  setHeightsAndWidths();
+  addEventListeners();
+  
 });
+
+
+
+function setHeightsAndWidths(){
+	wWidth = $(window).width();
+  	wHeight = $(window).height();
+
+  	$('.fullPageImg').height(wHeight);
+  	$('.fullPageImg').width(wWidth);
+
+  	var aboutSectionHeight = $('#aboutVertCenter').height();
+  	var aboutSectionPadding = (wHeight - aboutSectionHeight)/2;
+  	// $('#aboutSection').css("padding-top", wHeight);
+  	$('#aboutSection').css("padding-top", aboutSectionPadding)
+  	$('#aboutSection').css("padding-bottom", aboutSectionPadding);
+  	var contactContainerHeight = $('#contactVertCenter').height();
+  	var contactContainerPadding = 5 + (wHeight - contactContainerHeight)/2;
+  	$('#contactVertCenter').css("padding-top", contactContainerPadding);
+  	$('#contactVertCenter').css("padding-bottom", contactContainerPadding);
+  	$('#contactVertCenter').css("background-color", "#EDEDED");
+}
+
+function addEventListeners(){
+	$("#aboutButton").click(function(event) {
+		event.preventDefault();
+	    $('html, body').animate({
+	        scrollTop: $("#aboutSection").offset().top
+	    }, 600);
+	});
+
+	$("#contactButton").click(function(event) {
+		event.preventDefault();
+	    $('html, body').animate({
+	        scrollTop: $("#contactSection").offset().top
+	    }, 600);
+	});
+
+	$("#blogButton").click(function(event) {
+		event.preventDefault();
+	    $('html, body').animate({
+	        scrollTop: $("#blogSection").offset().top
+	    }, 600);
+	});
+}
+

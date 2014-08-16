@@ -9,17 +9,13 @@ $(document).ready(function() {
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
 
   setInstanceVariables();
-  addEventListeners();
+  addTagButtonIconsAndListeners();
   setPhotoSizes(wHeight, wWidth);
 });
 
 function setInstanceVariables(){
    wWidth = $(window).width();
    wHeight = $(window).height();
-}
-
-function addEventListeners(){
-   addTagButtonIconsAndListeners();
 }
 
 function addTagButtonIconsAndListeners() {

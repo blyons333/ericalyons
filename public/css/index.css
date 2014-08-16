@@ -1,5 +1,5 @@
 .fullPageImg{
-	background: url('/img/CloudPic.jpg') no-repeat;
+	/*background: url('/img/CloudPic.jpg') no-repeat;
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -7,7 +7,13 @@
 	-webkit-background-size: cover;
   	-moz-background-size: cover;
   	-o-background-size: cover;
-  	background-size: cover;
+  	background-size: cover;*/
+  	  /* Set rules to fill background */
+  background: url('/img/CloudPic.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 h1{
@@ -61,4 +67,60 @@ body{
 
 .italic{
 	font-style: italic;
+}
+
+.post_title {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 0px;
+	margin: 0px;
+}
+
+.post_text {
+	font-size: 15px;
+	padding: 15px 0 15px 0;
+	margin: 0px;
+}
+
+.post_create_date {
+	font-size: 10px;
+	padding: 0 0 0 0;
+	margin: 0px;
+	text-align: right;
+	font-style: italic;
+}
+
+.post_tag_container {
+	padding: 0px 0 0 0;
+}
+
+.post_image_caption{
+	margin: 0 0 25px 0;
+	font-size: 13px;
+	font-style: italic;
+	color: #969696;
+}
+
+.post_container {
+	margin: 0 50% 0 50%;
+	width: 50%;
+	left: -25%;
+	position: relative;
+}
+
+h2 {
+	padding: 10px 0 10px 0;
+	margin: 0;
+}
+
+.tag {
+	font-family: 'Lato', sans-serif !important;
+	font-size: 12px !important;
+	margin: 4px 2px 4px 2px !important;
+}
+
+.post {
+	padding: 40px 0 35px 0;
+	float: left;
+	width: 95%;
 }
