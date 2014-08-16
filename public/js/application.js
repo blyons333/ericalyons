@@ -1,6 +1,6 @@
 function setPhotoSizes(wHeight, wWidth) {
    var postHeight = wHeight * .9;
-   var postWidth = wWidth * .5;
+   var postWidth = wWidth * .475;
 
    $("img.post_image").each(function(){
       shrinkPhoto($(this), postHeight, postWidth, 1, 1);
