@@ -456,7 +456,7 @@ Post.addPostToPage = function(data) {
    $('#post_display_container').prepend(data);
    refreshAvailableTags();
    addTagButtonIconsAndListeners();
-   setPhotoSizes();
+   setPhotoSizes(wHeight, wWidth);
 }
 
 Post.deletePost = function(postId) {
