@@ -47,7 +47,7 @@ post '/admin/add-post' do
 
 	return erb(:_single_post, 
 			   :layout => false, 
-			   :locals => new_post.generate_view_locals())
+			   :locals => new_post.generate_view_locals(true))
 
 end
 
