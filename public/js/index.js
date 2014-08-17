@@ -8,7 +8,7 @@ $(document).ready(function() {
 
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
   	var loaded = 0;
-  	var images = $(window).find("img").filter(function(index, img) {
+  	var images = $(document).find("img").filter(function(index, img) {
         return !img.complete;
    	});
 
@@ -31,6 +31,7 @@ $(document).ready(function() {
 	    }); 
 	}
   	addEventListeners();
+  	addTagClickEvents();
 });
 
 
@@ -48,7 +49,7 @@ function setHeightsAndWidths(){
   	$('#aboutSection').css("padding-top", aboutSectionPadding)
   	$('#aboutSection').css("padding-bottom", aboutSectionPadding);
   	var contactContainerHeight = $('#contactVertCenter').height();
-  	var contactContainerPadding = 5 + (wHeight - contactContainerHeight)/2;
+  	var contactContainerPadding = (wHeight - contactContainerHeight)/2;
   	$('#contactVertCenter').css("padding-top", contactContainerPadding);
   	$('#contactVertCenter').css("padding-bottom", contactContainerPadding);
   	$('#contactVertCenter').css("background-color", "#EDEDED");
@@ -137,5 +138,9 @@ function updateLinkCntnrPos() {
       	$('#aboutButton').removeClass("active");
       }
    }
+}
+
+function addTagClickEvents() {
+
 }
 

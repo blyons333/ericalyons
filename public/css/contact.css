@@ -13,15 +13,19 @@ p{
 .center{
 	margin: 0 50% 0 50%;
 	width: 30%;
-	left: -10%;
+	left: -15%;
 	position: relative;
 }
 
-/*.vertCenter{
+/*#contactVertCenter{
 	margin: 10% 0 10% 0;
-	height: 10%;
+	height: 100%;
 	top: -35%;
 }*/
+
+.centered_text{
+	text-align: center;
+}
 
 a{
 	color: #9966FF;

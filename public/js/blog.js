@@ -21,5 +21,18 @@ function setInstanceVariables(){
 function addTagButtonIconsAndListeners() {
    $('.tag').button({
    });
+
+   $('.tag').click(function(event) {
+   		addTagToFilters(tagId);
+   		filterPostsByTag(tagId);
+   });
+}
+
+function filterPostsByTag(tagId) {
+
+}
+
+function addTagToFilters(tagId) {
+	
 }
 
