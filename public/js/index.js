@@ -43,7 +43,7 @@ function setHeightsAndWidths(){
   	$('.fullPageImg').width(wWidth);
 
   	var aboutSectionHeight = $('#aboutVertCenter').height();
-  	var aboutSectionPadding = 15 + (wHeight - aboutSectionHeight)/2;
+  	var aboutSectionPadding = 55 + (wHeight - aboutSectionHeight)/2;
   	$('#aboutSection').css("padding-top", aboutSectionPadding)
   	$('#aboutSection').css("padding-bottom", aboutSectionPadding);
   	var contactContainerHeight = $('#contactVertCenter').height();
@@ -57,7 +57,7 @@ function addEventListeners(){
 	$("#aboutButton").click(function(event) {
 		event.preventDefault();
 	    $('html, body').animate({
-	        scrollTop: $("#aboutSection").offset().top
+	        scrollTop: $("#aboutSection").offset().top + 50
 	    }, 600);
 	});
 
@@ -83,7 +83,7 @@ function addScrollListeners(){
 
 function updateLinkCntnrPos() {
    
-   if ($(window).scrollTop() < wHeight-5){
+   if ($(window).scrollTop() < wHeight - 55){
       $('#linkCntnr').css("position", "static");
       $('#linkCntnr').css("top", "auto");
       $('#linkCntnr').css("background-color", "");
@@ -115,12 +115,13 @@ function updateLinkCntnrPos() {
       $('#blogButton').addClass("content");
 
 
-      if ($(window).scrollTop() >= $("#aboutSection").offset().top - 5 &&
+      if ($(window).scrollTop() >= $("#aboutSection").offset().top - 55 &&
       		$(window).scrollTop() < $("#contactSection").offset().top) {
       	$('#aboutButton').addClass("active");
       	$('#contactButton').removeClass("active");
       	$('#blogButton').removeClass("active");
       	$('#tag_filters').hide();
+        $('#linkCntnr').css("background-color", "white");
       }
       if ($(window).scrollTop() >= $("#contactSection").offset().top - 55 && 
       		$(window).scrollTop() < $("#blogSection").offset().top - 55) {
@@ -128,6 +129,7 @@ function updateLinkCntnrPos() {
       	$('#aboutButton').removeClass("active");
       	$('#blogButton').removeClass("active");
       	$('#tag_filters').hide();
+        $('#linkCntnr').css("background-color", "#EDEDED");
       }
 
       if ($(window).scrollTop() >= $("#blogSection").offset().top - 55) {
@@ -135,6 +137,7 @@ function updateLinkCntnrPos() {
       	$('#contactButton').removeClass("active");
       	$('#aboutButton').removeClass("active");
       	$('#tag_filters').show();
+        $('#linkCntnr').css("background-color", "white");
       }
    }
 }
