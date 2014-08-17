@@ -51,6 +51,24 @@ post '/admin/add-post' do
 
 end
 
+post '/admin/update-post' do
+	postId = params[:id]
+	title = params[:title]
+	post_text = params[:post_text]
+	tags = params[:tags]
+	images = params[:images]
+
+	cur_user = User.find(session[:user_id])
+	updated_post = cur_user.update_post({:id => postId,
+								  :title => title,
+					   			  :post_text => post_text,
+					   			  :tags => tags,
+					   			  :images => images})
+	return erb(:_single_post,
+			   :layout => false,
+			   :locals => updated_post.generate_view_locals(true))
+end
+
 post '/admin/delete-post' do
 	post_id = params[:post_id]
 	cur_user = User.find(session[:user_id])

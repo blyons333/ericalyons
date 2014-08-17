@@ -65,9 +65,10 @@ body {
 	position: relative;
 }
 
-.delete_post_icon {
+.delete_post_icon, .edit_post_icon {
 	height: 10px;
 	width: 10px;
+	padding: 2px;
 	cursor: pointer;
 }
 
@@ -78,6 +79,7 @@ body {
 .new_photo {
 	display: inline;
 	float: left;
+	cursor: pointer;
 }
 
 .new_photo_caption_label {
@@ -111,12 +113,12 @@ body {
 .post {
 	padding: 40px 0 35px 0;
 	float: left;
-	width: 95%;
+	width: 92%;
 }
 
 .post_container {
 	margin: 0 50% 0 50%;
-	width: 50%;
+	width: 51.5%;
 	left: -25%;
 	position: relative;
 }

@@ -1,6 +1,7 @@
 var wWidth = 0;
 var wHeight = 0;
 var deletePostRegex = /delete_post(\d+)/;
+var editPostRegex = /edit_post(\d+)/;
 var headerHeight = 0;
 
 $(document).ready(function() {
@@ -59,64 +60,70 @@ function addNewPostDialogListeners() {
    
    Post.resetNewPostForm();
 
-   newPostDialog = $("#new_post_form").dialog({
-      autoOpen: false,
-      height: wHeight * 0.8,
-      width: wWidth * 0.8,
-      modal: true,
-      beforeClose: function(event, ui) {
-         $("body").css({ overflow: 'inherit' })
-      },
-      close: function(){
-         Post.resetNewPostForm()
-         numTags = 0;
-         numPhotos = 0;
-      },
-      buttons: {
-         "Add Tag": function() { 
-            numTags++;
-            createAndAddTagInput("new_tag" + numTags, function(elemToAdd){
-               $('#added_tags').append(elemToAdd);
-            });
-         },
-         "Add Photo": function() { 
-            numPhotos++;
-            createAndAddPhotoInput(numPhotos, $('#added_photos'));
-         },
-         "Create Post": function(){
-            var tagArray = new Array();
-            var photoArray = new Array();
-            $('button.tag_button').each(function(){
-               tagArray.push($(this).text());
-            });
-
-            $('div.new_photo_div').each(function(){
-               var imgElement = $(this).children('img.new_photo');
-               var captionElement = $(this).children('textarea.photo_caption_input');
-               var imgURL = imgElement.attr("src");
-               var captionText = captionElement.val();
-               var newDict = {
-                  'URL' : imgURL,
-                  'caption' : captionText 
-               };
-               photoArray.push(newDict);
-            });
-
-            var p = new Post($('#new_post_title').val(), 
-                             $('#new_post_body').val(), 
-                             tagArray, 
-                             photoArray);
-            p.createNewPost();
-            newPostDialog.dialog("close");
-         }
-      }
-
-   });
+   $("#new_post_form").hide();
 
    $('#new_post_button').on('click', function(event){
       event.preventDefault();
       wWidth = $(window).width();
       wHeight = $(window).height();
+      newPostDialog = $("#new_post_form").dialog({
+         autoOpen: false,
+         height: wHeight * 0.8,
+         width: wWidth * 0.8,
+         modal: true,
+         open: function(){
+            Post.resetNewPostForm();
+         },
+         beforeClose: function(event, ui) {
+            $("body").css({ overflow: 'inherit' })
+         },
+         close: function(){
+            Post.resetNewPostForm()
+            numTags = 0;
+            numPhotos = 0;
+         },
+         buttons: {
+            "Add Tag": function() { 
+               numTags++;
+               createAndAddTagInput("new_tag" + numTags, function(elemToAdd){
+                  $('#added_tags').append(elemToAdd);
+               });
+            },
+            "Add Photo": function() { 
+               numPhotos++;
+               createAndAddPhotoInput(numPhotos, function(elemToAdd){
+                  $('#added_photos').append(elemToAdd);
+               });
+            },
+            "Create Post": function(){
+               var tagArray = new Array();
+               var photoArray = new Array();
+               $('button.tag_button').each(function(){
+                  tagArray.push($(this).text());
+               });
+
+               $('div.new_photo_div').each(function(){
+                  var imgElement = $(this).children('img.new_photo');
+                  var captionElement = $(this).children('textarea.photo_caption_input');
+                  var imgURL = imgElement.attr("src");
+                  var captionText = captionElement.val();
+                  var newDict = {
+                     'URL' : imgURL,
+                     'caption' : captionText 
+                  };
+                  photoArray.push(newDict);
+               });
+
+               var p = new Post($('#new_post_title').val(), 
+                                $('#new_post_body').val(), 
+                                tagArray, 
+                                photoArray);
+               p.createNewPost();
+               newPostDialog.dialog("close");
+            }
+         }
+
+      });
       $("#new_post_form").data("tags", new Array());
       $("body").css({ overflow: 'hidden' });
       newPostDialog.dialog("open");
@@ -184,6 +191,13 @@ function addEditAndDeleteListeners(){
       Post.deletePost(postId);
 
    });
+
+   $('.edit_post_icon').on('click', function() {
+      var elemId = $(this).attr("id");
+      postId = editPostRegex.exec(elemId)[1];
+      Post.editPost(postId);
+
+   });
 }
 
 function updateAvailableTagsPos() {
@@ -197,7 +211,9 @@ function updateAvailableTagsPos() {
    }
 }
 
-function createAndAddPhotoInput(numPhotos, elemToAppend) {
+function createAndAddPhotoInput(numPhotos, addToPageFunction, defaultText) {
+   defaultText = defaultText || "";
+
    //New photo div
    var photoDivId = "new_photo_div" + numPhotos;
    var photoDiv = "<div id='" + photoDivId + "' class='new_photo_div'>Photo " + numPhotos + ": <br/></div>";
@@ -208,10 +224,12 @@ function createAndAddPhotoInput(numPhotos, elemToAppend) {
    var urlInputLabel = "<label for='" + photoUrlId + "' class='new_photo_url_label'>URL </label>";
    
    //Append all the elements
-   elemToAppend.append(photoDiv);
+   addToPageFunction(photoDiv);
    var photoDivElem = $('#' + photoDivId);
    photoDivElem.append(urlInputLabel);
    photoDivElem.append(urlInput);
+
+   $('#' + photoUrlId).val(defaultText);
 
    //Add event listeners for onblur and enter actions
    $('#'+photoUrlId).blur(function() {
@@ -223,12 +241,15 @@ function createAndAddPhotoInput(numPhotos, elemToAppend) {
         convertInputToImage(photoUrlId, photoDivId, numPhotos);
       }
    });
-
-   //Set the focus to the URL input box
-   $('#'+photoUrlId).focus();
+   if (defaultText == "") {
+      //Set the focus to the URL input box
+      $('#'+photoUrlId).focus();
+   }
 }
 
-function convertInputToImage(inputId, photoDivId, numPhotos) {
+function convertInputToImage(inputId, photoDivId, numPhotos, defaultCaptionText) {
+   defaultCaptionText = defaultCaptionText || "";
+
    var dialogHeight = wHeight * .8;
    var dialogWidth = wWidth * .8;
    //Get the image url
@@ -258,14 +279,25 @@ function convertInputToImage(inputId, photoDivId, numPhotos) {
          var captionElem = $('#' + photoCaptionId);
          captionElem.height(captionHeight);
          captionElem.width(captionWidth);
-         captionElem.attr("placeholder", "Caption (optional)");
-         captionElem.focus();
-
-         //Scroll to the bottom of the form
-         var myDiv = $('#new_post_form');
-         myDiv.animate({ scrollTop: myDiv.prop("scrollHeight") - myDiv.height() }, 400);
-   });
-
+         if (defaultCaptionText == ""){
+            captionElem.attr("placeholder", "Caption (optional)");
+            captionElem.focus();
+            //Scroll to the bottom of the form
+            var myDiv = $('#new_post_form');
+            myDiv.animate({ scrollTop: myDiv.prop("scrollHeight") - myDiv.height() }, 400);
+         }else{
+            captionElem.val(defaultCaptionText);
+         }
+         
+      });
+      
+      imageElement.click(function(event){
+         event.preventDefault();
+         createAndAddPhotoInput(numPhotos, function(elemToAdd){
+            var photoDivId = "#new_photo_div" + numPhotos;
+            $(photoDivId).replaceWith(elemToAdd);
+         }, imageURL)
+      });
       
       imageInputElement.unbind();
    }
@@ -274,7 +306,6 @@ function convertInputToImage(inputId, photoDivId, numPhotos) {
 function createAndAddTagInput(tagId, addToPageFunction){
    var inputHtml = "<input id='" + tagId + "' class='tag_input_button'></input>"
    addToPageFunction(inputHtml);
-   //elemToAppend.append(inputHtml);
    var tagInput = $('#'+tagId);
    var availableTagsArr = new Array();
    $('.available_tag').each(function(){
@@ -313,7 +344,7 @@ function convertInputToButton(tagId) {
       });
 
       $('#'+tagId).click(function() {
-         createAndAddTagInput(tagId, function(elemToAdd) {
+            createAndAddTagInput(tagId, function(elemToAdd) {
             var elemToReplace = $('#'+tagId);
             var tagText = elemToReplace.text();
             elemToReplace.replaceWith(elemToAdd);
@@ -363,6 +394,26 @@ Post.prototype.createNewPost = function() {
          Post.addPostToPage(data);
          Post.resetNewPostForm();
          addEditAndDeleteListeners();
+      }
+   });
+}
+
+Post.prototype.updatePost = function(postId) {
+   $.ajax({
+       url: "/admin/update-post",
+      type: "POST",
+      data: {'id': postId,
+             'title': this.title, 
+             'post_text': this.body, 
+             'tags': this.tags, 
+             'images': this.images},
+      success: function(data){
+         $('#post_container' + postId).replaceWith(data);
+         Post.resetNewPostForm();
+         addEditAndDeleteListeners();
+         refreshAvailableTags();
+         addTagButtonIconsAndListeners();
+         setPhotoSizes(wHeight, wWidth);
       }
    });
 }
@@ -430,6 +481,132 @@ Post.deletePost = function(postId) {
          refreshAvailableTags();
       }
    });
+}
+
+Post.editPost = function(postId) {
+   var numTags = 0;
+   var numPhotos = 0;
+
+   editPostDialog = $("#new_post_form").dialog({
+      autoOpen: false,
+      height: wHeight * 0.8,
+      width: wWidth * 0.8,
+      modal: true,
+      open: function(){
+         numTags = 0;
+         numPhotos = 0;
+         Post.resetNewPostForm();
+
+         var postDiv = $('#post' + postId);
+
+         //Add existing title
+         console.log(postDiv.children("p.post_title").text());
+         var title = "";
+         title = postDiv.children("p.post_title").text();
+         $('#new_post_title').val(title);
+
+         //Add existing text
+         $('#new_post_body').val(postDiv.children("p.post_text").text());
+
+         //Add existing tags
+         var tags = postDiv.find("button.tag");
+         tags.each(function(){
+            numTags++;
+            var tagId = "new_tag" + numTags
+            var tagButton = "<button type='button' id='" + tagId + "' class='tag_button'>" + $(this).text() + "</button>";
+            $('#added_tags').append(tagButton);
+            $('#'+tagId).button({
+               icons: {
+                  primary: "ui-icon-close"
+               }
+            });
+            var uiCloseIcon = $('#'+tagId).children('span.ui-icon-close');
+            uiCloseIcon.on("click", function(event) {
+               removeElement('#'+tagId);
+            });
+
+            $('#'+tagId).click(function() {
+               createAndAddTagInput(tagId, function(elemToAdd) {
+                  var elemToReplace = $('#'+tagId);
+                  var tagText = elemToReplace.text();
+                  elemToReplace.replaceWith(elemToAdd);
+                  $('#'+tagId).val(tagText);
+               });
+            });
+         });
+
+         //Add existing images
+         var images = postDiv.find("img.post_image");
+         var captions = postDiv.find("p.post_image_caption");
+
+         for(var i = 0; i < images.length; i ++){
+            numPhotos++;
+            console.log(images);
+            var image = $(images[i]).attr("src");
+            var caption = $(captions[i]).text();
+            createAndAddPhotoInput(numPhotos, function(elemToAdd) {
+               $('#added_photos').append(elemToAdd)
+            }, image);
+            convertInputToImage("new_photo_url" + numPhotos, "new_photo_div" + numPhotos, numPhotos, caption)
+         }
+
+      },
+      beforeClose: function(event, ui) {
+         $("body").css({ overflow: 'inherit' })
+      },
+      close: function(){
+         Post.resetNewPostForm();
+         numTags = 0;
+         numPhotos = 0;
+      },
+      buttons: {
+         "Add Tag": function() { 
+            numTags++;
+            createAndAddTagInput("new_tag" + numTags, function(elemToAdd){
+               $('#added_tags').append(elemToAdd);
+            });
+         },
+         "Add Photo": function() { 
+            numPhotos++;
+            createAndAddPhotoInput(numPhotos, function(elemToAdd){
+               $('#added_photos').append(elemToAdd);
+            });
+         },
+         "Update Post": function(){
+            var tagArray = new Array();
+            var photoArray = new Array();
+            $('button.tag_button').each(function(){
+               tagArray.push($(this).text());
+            });
+
+            $('div.new_photo_div').each(function(){
+               var imgElement = $(this).children('img.new_photo');
+               var captionElement = $(this).children('textarea.photo_caption_input');
+               var imgURL = imgElement.attr("src");
+               var captionText = captionElement.val();
+               var newDict = {
+                  'URL' : imgURL,
+                  'caption' : captionText 
+               };
+               photoArray.push(newDict);
+            });
+
+            var p = new Post($('#new_post_title').val(), 
+                             $('#new_post_body').val(), 
+                             tagArray, 
+                             photoArray);
+            //p.createNewPost();
+            p.updatePost(postId);
+            console.log("updated post:");
+            console.log(p);
+            editPostDialog.dialog("close");
+         }
+      }
+
+   });
+
+   $("body").css({ overflow: 'hidden' });
+   editPostDialog.dialog("open");
 }
 
 function Tag(){

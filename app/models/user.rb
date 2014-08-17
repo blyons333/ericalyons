@@ -53,6 +53,36 @@ require 'bcrypt'
       return new_post
     end
 
+    def update_post(properties)
+      #Create a new post
+      update_post = posts.find(properties[:id])
+
+      update_post.title = properties[:title]
+      update_post.post_text = properties[:post_text]
+      
+      #Delete all tags and add the new ones
+      update_post.tags.clear()
+
+      #Add tags to post
+      unless properties[:tags].blank?
+        properties[:tags].each { |t|
+          update_post.add_tag(t)
+        }
+      end
+
+      #Delete all images and add the new ones
+      update_post.images.clear()
+
+      #Add images to post
+      unless properties[:images].blank?
+        properties[:images].each { |i|
+          update_post.add_image(i[1])
+        }
+      end
+
+      return update_post
+    end
+
     def delete_post(post_id)
       post_to_delete = posts.find(post_id)
       posts.delete(post_to_delete)
