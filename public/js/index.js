@@ -83,9 +83,10 @@ function addScrollListeners(){
 
 function updateLinkCntnrPos() {
    
-   if ($(window).scrollTop() < wHeight - 55){
+   if ($(window).scrollTop() < wHeight - 5){
       $('#linkCntnr').css("position", "static");
       $('#linkCntnr').css("top", "auto");
+      $('#linkCntnr').css("width", "auto");
       $('#linkCntnr').css("background-color", "");
 
       $('#aboutButton').removeClass("content");
@@ -115,7 +116,7 @@ function updateLinkCntnrPos() {
       $('#blogButton').addClass("content");
 
 
-      if ($(window).scrollTop() >= $("#aboutSection").offset().top - 55 &&
+      if ($(window).scrollTop() >= $("#aboutSection").offset().top - 10 &&
       		$(window).scrollTop() < $("#contactSection").offset().top) {
       	$('#aboutButton').addClass("active");
       	$('#contactButton').removeClass("active");
