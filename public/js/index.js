@@ -6,7 +6,7 @@ $(document).ready(function() {
   // This guarantees that any elements we bind to will exist on the page
   // when we try to bind to them
 
-  // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
+  // Make sure images are loaded before setting widths and heights
   	var loaded = 0;
   	var images = $(document).find("img").filter(function(index, img) {
         return !img.complete;
@@ -31,7 +31,6 @@ $(document).ready(function() {
 	    }); 
 	}
   	addEventListeners();
-  	addTagClickEvents();
 });
 
 
@@ -45,7 +44,6 @@ function setHeightsAndWidths(){
 
   	var aboutSectionHeight = $('#aboutVertCenter').height();
   	var aboutSectionPadding = 15 + (wHeight - aboutSectionHeight)/2;
-  	// $('#aboutSection').css("padding-top", wHeight);
   	$('#aboutSection').css("padding-top", aboutSectionPadding)
   	$('#aboutSection').css("padding-bottom", aboutSectionPadding);
   	var contactContainerHeight = $('#contactVertCenter').height();
@@ -59,7 +57,6 @@ function addEventListeners(){
 	$("#aboutButton").click(function(event) {
 		event.preventDefault();
 	    $('html, body').animate({
-	        // scrollTop: $("#aboutVertCenter").offset().top
 	        scrollTop: $("#aboutSection").offset().top
 	    }, 600);
 	});
@@ -80,8 +77,7 @@ function addEventListeners(){
 }
 
 function addScrollListeners(){   
-   //Make the available tags "stick" to the top of the page
-   //as you scroll
+   //Make the page header stick to the top as you scroll
    $(window).scroll(updateLinkCntnrPos);
 }
 
@@ -143,7 +139,4 @@ function updateLinkCntnrPos() {
    }
 }
 
-function addTagClickEvents() {
-
-}
 

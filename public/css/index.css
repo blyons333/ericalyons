@@ -1,19 +1,17 @@
-.fullPageImg{
-	/*background: url('/img/CloudPic.jpg') no-repeat;
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	display: block;
-	-webkit-background-size: cover;
-  	-moz-background-size: cover;
-  	-o-background-size: cover;
-  	background-size: cover;*/
-  	  /* Set rules to fill background */
-  background: url('/img/CloudPic.jpg') no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+
+/*element CSS*/
+a{
+	padding: 0;
+	margin: 5px 15px 5px 0px;
+	font-family: 'Open Sans', sans-serif;
+	display: inline;
+	color: white;
+	text-decoration: none;
+	font-size: 25px;
+}
+
+body{
+	margin: 0px 0 0px 0;
 }
 
 h1{
@@ -23,6 +21,11 @@ h1{
 	font-size: 37px;
 }
 
+h2 {
+	padding: 10px 0 10px 0;
+	margin: 0;
+}
+
 h3{
 	color: white;
 	font-family: 'Open Sans', sans-serif;
@@ -30,15 +33,24 @@ h3{
 	font-size: 17px;
 }
 
+p{
+	padding: 7px 0px 3px 0px; /* from contact */
+	font-family: 'Lato', sans-serif;
+}
 
-a{
-	padding: 0;
-	margin: 5px 15px 5px 0px;
-	font-family: 'Open Sans', sans-serif;
-	display: inline;
-	color: white;
-	text-decoration: none;
-	font-size: 25px;
+
+
+
+/*element with class CSS*/
+
+a.contact{
+	color: #9966FF;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+a:hover.contact {
+	color: #6343A6;
 }
 
 a:link.photo {color:white}    /* unvisited link */
@@ -67,69 +79,20 @@ a:hover.active{color: #6343A6;}
 a:active.active{color: #6343A6;}
 
 
-/*
-a:hover{
-	color: #E6CCFF;
-}
-*/
 
-#linkCntnr{
-	padding-left: 20px;
-	z-index: 99;
-	width: 100%;
-	height: 60px;
-	padding-top: 5px;
-}
+/*ID CSS*/
 
 #mainTitle{
 	color: white;
 	padding: 20px 0px 0px 20px;
 }
 
-body{
-	margin: 0px 0 0px 0;
-}
-
-.italic{
-	font-style: italic;
-}
-
-.post_title {
-	font-size: 20px;
-	font-weight: bold;
-	padding: 0px;
-	margin: 0px;
-}
-
-.post_text {
-	font-size: 15px;
-	padding: 15px 0 15px 0;
-	margin: 0px;
-}
-
-.post_create_date {
-	font-size: 10px;
-	padding: 0 0 0 0;
-	margin: 0px;
-	text-align: right;
-	font-style: italic;
-}
-
-.post_tag_container {
-	padding: 0px 0 0 0;
-}
-
-.post_image_caption{
-	margin: 0 0 25px 0;
-	font-size: 13px;
-	font-style: italic;
-	color: #969696;
-}
-
-.post_container {
-	/*margin: 0 50% 0 50%;*/
-	width: 55%;
-	padding-left: 29%
+#linkCntnr{
+	padding-left: 20px;
+	z-index: 99;
+	width: auto;
+	height: 60px;
+	padding-top: 5px;
 }
 
 #post_display_container {
@@ -146,9 +109,103 @@ body{
 	z-index: 999;
 }
 
-h2 {
-	padding: 10px 0 10px 0;
-	margin: 0;
+
+
+
+/*Class CSS*/
+
+.about_center{
+	margin: 0 50% 0 50%;
+	width: 60%;
+	left: -30%;
+	position: relative;
+	padding-top: 15px;
+}
+
+.about_img {
+	width: 50%;
+	padding-top: 15px;
+	padding-left: 25%;
+}
+
+.about_italic{
+	padding: 7px 0px 7px 0px;
+	font-style: italic;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+}
+
+
+.centered_text{
+	text-align: center;
+}
+
+.contact_center{
+	margin: 0 50% 0 50%;
+	width: 30%;
+	left: -15%;
+	position: relative;
+}
+
+.contact_italic{
+	font-style: italic;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+}
+
+.italic{
+	font-style: italic;
+}
+
+.fullPageImg{
+  background: url('/img/CloudPic.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.post {
+	padding: 40px 0 35px 0;
+	float: left;
+	width: 95%;
+}
+
+.post_container {
+	width: 55%;
+	padding-left: 29%
+}
+
+.post_create_date {
+	font-size: 10px;
+	padding: 0 0 0 0;
+	margin: 0px;
+	text-align: right;
+	font-style: italic;
+}
+
+.post_image_caption{
+	margin: 0 0 25px 0;
+	font-size: 13px;
+	font-style: italic;
+	color: #969696;
+}
+
+.post_tag_container {
+	padding: 0px 0 0 0;
+}
+
+.post_text {
+	font-size: 15px;
+	padding: 15px 0 15px 0;
+	margin: 0px;
+}
+
+.post_title {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 0px;
+	margin: 0px;
 }
 
 .small_heading {
@@ -163,8 +220,7 @@ h2 {
 	margin: 4px 2px 4px 2px !important;
 }
 
-.post {
-	padding: 40px 0 35px 0;
-	float: left;
-	width: 95%;
-}
+
+
+
+

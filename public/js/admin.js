@@ -1,9 +1,6 @@
 var wWidth = 0;
 var wHeight = 0;
-var postIdRegex = /post(\d+)/;
 var deletePostRegex = /delete_post(\d+)/;
-var postContentIdRegex = /post_content(\d+)/;
-var tagIdRegex = /tag(\d+)/;
 var headerHeight = 0;
 
 $(document).ready(function() {
@@ -37,9 +34,7 @@ $(document).ready(function() {
            }
        }); 
    }
-  // setInstanceVariables();
-  // addEventListeners();
-  // setPhotoSizes(wHeight, wWidth);
+
 });
 
 function setInstanceVariables(){
@@ -48,9 +43,6 @@ function setInstanceVariables(){
    var availableTagsYVal = $('#available_tags').position().top;
    var newPostFormHeight = $('#new_post_form').height();
    headerHeight = availableTagsYVal - newPostFormHeight;
-   // console.log("y val: " + available_tags_y_val);
-   // console.log("half height: " + available_tags_half_height);
-   // console.log("header height: " + headerHeight);
 }
 
 function addEventListeners(){
@@ -144,12 +136,12 @@ function addTagButtonIconsAndListeners() {
       var parentButton = $(this).parent();
       var parentId = parentButton.attr('id');
       
-      var postId = postIdRegex.exec(parentId);
-      var tagId = tagIdRegex.exec(parentId);
-      if (postId == null && tagId.length > 1) {
-         Tag.removeTag(tagId[1]);
-      }else if (postId.length > 1 && tagId.length > 1){
-         Post.removeTag(postId[1], tagId[1]);
+      var postId = getPostId(parentId);
+      var tagId = getTagId(parentId);
+      if (postId == "" && tagId != "") {
+         Tag.removeTag(tagId);
+      }else if (postId != "" && tagId != ""){
+         Post.removeTag(postId, tagId);
       }
       
    });
@@ -162,13 +154,12 @@ function addTagButtonIconsAndListeners() {
 
    $('.post').droppable({
       accept: ".available_tag",
-      // activeClass: "ui-state-hover",
       hoverClass: "post_hover_active",
       drop: function(event, ui) {
          droppedTagId = ui.draggable.attr('id');
-         tagId = tagIdRegex.exec(droppedTagId);
-         postId = postIdRegex.exec(($(this)[0]).id);
-         Post.addTag(postId[1], tagId[1]);
+         tagId = getTagId(droppedTagId);
+         postId = getPostId($(this)[0].id);
+         Post.addTag(postId, tagId);
       }
    });
 }
@@ -186,7 +177,6 @@ function addScrollListeners(){
 }
 
 function addEditAndDeleteListeners(){
-   // $('.post_edit_icons').css('visibility', 'hidden');
    
    $('.delete_post_icon').on('click', function() {
       var elemId = $(this).attr("id");
@@ -194,30 +184,6 @@ function addEditAndDeleteListeners(){
       Post.deletePost(postId);
 
    });
-
-
-
-   // $('.post').mouseover(function() {
-   //    var elemId = $(this).attr("id");
-   //    var postId = postIdRegex.exec(elemId)[1];
-   //    var iconsDivId = "editPost" + postId;
-   //    $('#'+iconsDivId).css('visibility', 'visible');
-   // });
-
-   // $('.post').mouseout(function() {
-   //    var elemId = $(this).attr("id");
-   //    var postId = postIdRegex.exec(elemId)[1];
-   //    var iconsDivId = "editPost" + postId;
-   //    $('#'+iconsDivId).css('visibility', 'hidden');
-   // });
-
-   // $('.post_edit_icons').mouseover(function(){
-   //    $(this).css('visibility', 'visible');
-   // });
-
-   // $('.post_edit_icons').mouseout(function(){
-   //    $(this).css('visibility', 'hidden');
-   // });
 }
 
 function updateAvailableTagsPos() {
@@ -241,18 +207,11 @@ function createAndAddPhotoInput(numPhotos, elemToAppend) {
    var urlInput = "<input id='" + photoUrlId + "' class='photo_url_input'></input>";
    var urlInputLabel = "<label for='" + photoUrlId + "' class='new_photo_url_label'>URL </label>";
    
-   //Caption input
-   // var photoCaptionId = "new_photo_caption" + numPhotos;
-   // var captionInput = "<input id='" + photoCaptionId + "' class='photo_caption_input'></input>";
-   // var captionInputLabel = "<label for='" + photoCaptionId + "' class='new_photo_label'> Caption </label>";
-   
    //Append all the elements
    elemToAppend.append(photoDiv);
    var photoDivElem = $('#' + photoDivId);
    photoDivElem.append(urlInputLabel);
    photoDivElem.append(urlInput);
-   // photoDivElem.append(captionInputLabel);
-   // photoDivElem.append(captionInput);
 
    //Add event listeners for onblur and enter actions
    $('#'+photoUrlId).blur(function() {

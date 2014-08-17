@@ -41,8 +41,21 @@ function removeElement(elementId) {
 function getTagId(idText){
    var tagId = "";
    var tagIdArray = tagIdRegex.exec(idText);
-   if (tagIdArray.length > 1) {
+   if (tagIdArray != null && tagIdArray.length > 1) {
       tagId = tagIdArray[1];
    }
    return tagId;
 }
+
+function getPostId(idText){
+   var postId = "";
+
+   var postIdArray = postIdRegex.exec(idText);
+
+   if (postIdArray != null && postIdArray.length > 1) {
+      postId = postIdArray[1];
+   }
+
+   return postId;
+}
+

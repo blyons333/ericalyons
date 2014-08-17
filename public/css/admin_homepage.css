@@ -1,13 +1,25 @@
+/*element CSS*/
+
+h2 {
+	padding: 10px 0 10px 0;
+	margin: 0;
+}
+
 body {
 	font-family: 'Lato', sans-serif !important;
 }
 
-.page_title {
-	text-align: center;
-}
+
+
+/*ID CSS*/
 
 #action_buttons {
 	padding: 10px 0 0 20px;
+}
+
+#added_tags {
+	height: 35px;
+	padding: 5px 0 10px 0;
 }
 
 #available_tags{
@@ -15,14 +27,6 @@ body {
 	width: 15%;
 	padding: 10px 0 0 20px;
   	left: 0;
-}
-
-.inline{
-	display: inline-block;
-}
-
-.action_button_span{
-	padding: 5px 5px 5px 5px;
 }
 
 #new_post {
@@ -42,19 +46,33 @@ body {
 	padding: .4em;
 }
 
-.photo_url_input {
-	display: block;
-	width:95%; 
-	padding:.4em;
+
+
+/*Class CSS*/
+.action_button{
+	font-family: 'Lato', sans-serif !important;
+	font-size: 1em !important;
 }
 
-.photo_caption_input {
-	display: inline;
-	float: right;
+.action_button_span{
+	padding: 5px 5px 5px 5px;
 }
 
-.new_photo_div {
-	margin: 10px 0 10px 0;
+.center {
+	margin: 0 50% 0 50%;
+	width: 50%;
+	left: -25%;
+	position: relative;
+}
+
+.delete_post_icon {
+	height: 10px;
+	width: 10px;
+	cursor: pointer;
+}
+
+.inline{
+	display: inline-block;
 }
 
 .new_photo {
@@ -62,31 +80,45 @@ body {
 	float: left;
 }
 
+.new_photo_caption_label {
+	display: inline;
+}
+
+.new_photo_div {
+	margin: 10px 0 10px 0;
+}
+
 .new_photo_url_label {
 	display: block;
 	padding: .4em 0 0 0;
 }
 
-.new_photo_caption_label {
+.page_title {
+	text-align: center;
+}
+
+.photo_caption_input {
 	display: inline;
+	float: right;
 }
 
-#added_tags {
-	height: 35px;
-	padding: 5px 0 10px 0;
+.photo_url_input {
+	display: block;
+	width:95%; 
+	padding:.4em;
 }
 
-.post_title {
-	font-size: 20px;
-	font-weight: bold;
-	padding: 0px;
-	margin: 0px;
+.post {
+	padding: 40px 0 35px 0;
+	float: left;
+	width: 95%;
 }
 
-.post_text {
-	font-size: 15px;
-	padding: 15px 0 15px 0;
-	margin: 0px;
+.post_container {
+	margin: 0 50% 0 50%;
+	width: 50%;
+	left: -25%;
+	position: relative;
 }
 
 .post_create_date {
@@ -97,22 +129,17 @@ body {
 	font-style: italic;
 }
 
-.post_tag_container {
-	padding: 0px 0 0 0;
+.post_edit_icons {
+	float: right;
+	padding-top: 36px;
+	padding-left: 20px;
+	padding-bottom: 50px;
 }
 
-.center {
-	margin: 0 50% 0 50%;
-	width: 50%;
-	left: -25%;
-	position: relative;
-}
-
-.post_container {
-	margin: 0 50% 0 50%;
-	width: 50%;
-	left: -25%;
-	position: relative;
+.post_hover_active {
+	background-color: #CCC2FC;
+	z-index: -3;
+	padding: 0;
 }
 
 .post_image_caption{
@@ -122,20 +149,21 @@ body {
 	color: #969696;
 }
 
-h2 {
-	padding: 10px 0 10px 0;
-	margin: 0;
+.post_tag_container {
+	padding: 0px 0 0 0;
 }
 
-.action_button{
-	font-family: 'Lato', sans-serif !important;
-	font-size: 1em !important;
+.post_text {
+	font-size: 15px;
+	padding: 15px 0 15px 0;
+	margin: 0px;
 }
 
-.post_hover_active {
-	background-color: #CCC2FC;
-	z-index: -3;
-	padding: 0;
+.post_title {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 0px;
+	margin: 0px;
 }
 
 .tag {
@@ -144,31 +172,7 @@ h2 {
 	margin: 4px 2px 4px 2px !important;
 }
 
-.post {
-	padding: 40px 0 35px 0;
-	float: left;
-	width: 95%;
-}
-
-/*.post_content {
-	float: left;
-	width: 95%;
-}*/
-
-.post_edit_icons {
-	float: right;
-	padding-top: 36px;
-	padding-left: 20px;
-	padding-bottom: 50px;
-}
-
-.delete_post_icon {
-	height: 10px;
-	width: 10px;
-	cursor: pointer;
-}
-
-
 .ui-dialog .ui-state-error { 
 	padding: .3em; 
 }
+
