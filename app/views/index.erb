@@ -40,7 +40,9 @@
     <div id="blogSection">
       <%= erb(:blog, 
               :layout => false, 
-              :locals => {:user => user}) %>
+              :locals => {:posts => user.posts.ordered_by_reverse,
+                          :tag_filters => {}
+                          }) %>
     </div>
 
 

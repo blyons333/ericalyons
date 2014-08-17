@@ -127,10 +127,23 @@ body{
 }
 
 .post_container {
-	margin: 0 50% 0 50%;
-	width: 50%;
-	left: -25%;
-	position: relative;
+	/*margin: 0 50% 0 50%;*/
+	width: 55%;
+	padding-left: 29%
+}
+
+#post_display_container {
+	width: 90%;
+	float: left;
+}
+
+#tag_filters {
+	padding-top: 20px;
+	padding-right: 10px;
+	position: fixed;
+	left: 90%;
+	top: 0;
+	z-index: 999;
 }
 
 h2 {
@@ -138,7 +151,13 @@ h2 {
 	margin: 0;
 }
 
-.tag {
+.small_heading {
+	padding: 2px 0px 5px 0px;
+	font-size: 17px;
+	margin: 0px;
+}
+
+.tag, .filter_tag {
 	font-family: 'Lato', sans-serif !important;
 	font-size: 12px !important;
 	margin: 4px 2px 4px 2px !important;

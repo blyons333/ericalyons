@@ -7,10 +7,19 @@
 	<script src="/js/blog.js"></script>
 </head>
 <body> -->
-	<div id='post_display_container'>
-	<% user.posts.ordered_by_reverse.each do |p| %>
+<div id='post_display_container'>
+	<% posts.each do |p| %>
 	<%= erb(:_single_post, :layout=>false, :locals => p.generate_view_locals(false)) %>
 	<% end %>
+</div>
+<div id="tag_filters">
+		<% if tag_filters.count > 0 %>
+			<p class='small_heading'>Filtered tags:</p>
+		<% end %>
+		<% tag_filters.each do |t| %>
+			<button id='<%="tag#{t.id}"%>' class='filter_tag'><%=t.name%></button>
+			<br/>
+		<% end %>
 </div>
 <!-- </body>
 </html> -->

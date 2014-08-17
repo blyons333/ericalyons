@@ -1,3 +1,8 @@
+var postIdRegex = /post(\d+)/;
+var deletePostRegex = /delete_post(\d+)/;
+var postContentIdRegex = /post_content(\d+)/;
+var tagIdRegex = /tag(\d+)/;
+
 function setPhotoSizes(wHeight, wWidth) {
    var postHeight = wHeight * .9;
    var postWidth = wWidth * .475;
@@ -31,4 +36,13 @@ function shrinkPhoto(elemToShrink, maxHeight, maxWidth, heightReduce, widthReduc
 function removeElement(elementId) {
    var element = $(elementId);
    element.remove();
+}
+
+function getTagId(idText){
+   var tagId = "";
+   var tagIdArray = tagIdRegex.exec(idText);
+   if (tagIdArray.length > 1) {
+      tagId = tagIdArray[1];
+   }
+   return tagId;
 }

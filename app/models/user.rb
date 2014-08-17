@@ -30,7 +30,6 @@ require 'bcrypt'
     end
 
     def add_post(properties)
-      puts properties
       #Create a new post
       new_post = posts.create{ |p|
           p.title = properties[:title]
@@ -83,6 +82,16 @@ require 'bcrypt'
         end
       }
       return posts_affected
+    end
+
+    def get_filtered_posts(tag_filters)
+      filtered_posts = Array.new()
+      posts.ordered_by_reverse.each { |p|
+        if p.tags.find_all_by_id(tag_filters).count() == tag_filters.count
+          filtered_posts.push(p)
+        end
+      }
+      return filtered_posts
     end
 
   end

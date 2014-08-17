@@ -124,18 +124,21 @@ function updateLinkCntnrPos() {
       	$('#aboutButton').addClass("active");
       	$('#contactButton').removeClass("active");
       	$('#blogButton').removeClass("active");
+      	$('#tag_filters').hide();
       }
       if ($(window).scrollTop() >= $("#contactSection").offset().top - 55 && 
       		$(window).scrollTop() < $("#blogSection").offset().top - 55) {
       	$('#contactButton').addClass("active");
       	$('#aboutButton').removeClass("active");
       	$('#blogButton').removeClass("active");
+      	$('#tag_filters').hide();
       }
 
       if ($(window).scrollTop() >= $("#blogSection").offset().top - 55) {
       	$('#blogButton').addClass("active");
       	$('#contactButton').removeClass("active");
       	$('#aboutButton').removeClass("active");
+      	$('#tag_filters').show();
       }
    }
 }
