@@ -345,6 +345,7 @@ function refreshAvailableTags() {
 
 function Post(title, body, tags, images) {
    this.title = title;
+   body = body.replace(/\n/g, "<br>");
    this.body = body;
    this.tags = tags;
    this.images = images;
