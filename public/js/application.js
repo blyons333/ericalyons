@@ -7,9 +7,32 @@ function setPhotoSizes(wHeight, wWidth) {
    var postHeight = wHeight * .9;
    var postWidth = wWidth * .475;
 
-   $("img.post_image").each(function(){
-      shrinkPhoto($(this), postHeight, postWidth, 1, 1);
-   });
+   // Make sure images are loaded before setting widths and heights
+   var loaded = 0;
+   var images = $(document).find("img").filter(function(index, img) {
+        return !img.complete;
+      });
+
+   // Find any?
+   if (images.length === 0) {
+      //Nope, we're done loading images, set heights
+      //and widths
+      $("img.post_image").each(function(){
+         shrinkPhoto($(this), postHeight, postWidth, 1, 1);
+      });
+   }else {
+       // We're waiting for some images, do that
+       loaded = 0;
+       images.load(function() {
+           // One of them loaded; was it the last one?
+           if (++loaded === images.length) {
+               // Yup, we're done
+               $("img.post_image").each(function(){
+                  shrinkPhoto($(this), postHeight, postWidth, 1, 1);
+               });
+           }
+       }); 
+   }
 }
 
 function shrinkPhoto(elemToShrink, maxHeight, maxWidth, heightReduce, widthReduce) {
